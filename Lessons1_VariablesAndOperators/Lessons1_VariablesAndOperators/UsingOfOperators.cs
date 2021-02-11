@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.RegularExpressions;
 
 /*
@@ -15,7 +15,7 @@ namespace Lessons1_VariablesAndOperators
             double firstNumber = 0.0;
             double secondNumber = 0.0;
             string operation = null;
-            while ((firstNumber == 0.0) & (secondNumber == 0.0) & (operation == null))
+            while (string.IsNullOrEmpty(operation))
             {
                 try
                 {
@@ -25,10 +25,10 @@ namespace Lessons1_VariablesAndOperators
                     secondNumber = double.Parse(Console.ReadLine());
                     Console.WriteLine("Select the desired operation on the numbers: '+', '-', '*', '/', '%' ");
                     operation = Console.ReadLine();
-                    if (Regex.IsMatch(operation, "^[+-/*%]+$")) ;
-                    else
+                    if (Regex.IsMatch(operation, "^[^+-/*%]+$"))
                     {
                         operation = null;
+                        Console.WriteLine("This type of input value is wrong! Please try again:");
                     }
                 }
                 catch (FormatException)
