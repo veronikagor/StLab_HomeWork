@@ -1,10 +1,12 @@
 ﻿using System;
+using Lessons3_ClassesObjectsMethods.Interfaces;
 
 namespace Lessons3_ClassesObjectsMethods.Models
 {
     public class Employee : BaseUser, IInfoActions
     {
         public Job Job { get; set; }
+
         public Company Company { get; set; }
 
         public void ShowInfo()

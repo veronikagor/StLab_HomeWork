@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Bogus;
+﻿using System.Linq;
 using Lessons3_ClassesObjectsMethods.Factories;
-using Lessons3_ClassesObjectsMethods.Models;
+using Lessons3_ClassesObjectsMethods.ReportGenerators;
+using Lessons3_ClassesObjectsMethods.Utils;
 
 namespace Lessons3_ClassesObjectsMethods
 {
@@ -10,15 +9,10 @@ namespace Lessons3_ClassesObjectsMethods
     {
         static void Main(string[] args)
         {
-            const int minCountOfUsers = 1;
-            const int maxCountOfUsers = 10;
-            UserFactory factory = new UserFactory();
+            var factory = new UserFactory();
 
-            List<Candidate> candidates =
-                factory.GetCandidates(new Faker().Random.Int(minCountOfUsers, maxCountOfUsers));
-
-            List<Employee> employees =
-                factory.GetEmployees(new Faker().Random.Int(minCountOfUsers, maxCountOfUsers));
+            var candidates = factory.GetCandidates(RandomUtils.CreateRandomNumberOfUsers());
+            var employees = factory.GetEmployees(RandomUtils.CreateRandomNumberOfUsers());
 
             candidates.First().ShowInfo();
             employees.First().ShowInfo();

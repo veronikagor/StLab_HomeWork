@@ -1,7 +1,7 @@
 ﻿using System;
-using Lessons3_ClassesObjectsMethods.Models;
+using Lessons3_ClassesObjectsMethods.Interfaces;
 
-namespace Lessons3_ClassesObjectsMethods.Factories
+namespace Lessons3_ClassesObjectsMethods.Models
 {
     public class Candidate : BaseUser, IInfoActions
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Lessons3_ClassesObjectsMethods.Factories;
+using Lessons3_ClassesObjectsMethods.Models;
 
-namespace Lessons3_ClassesObjectsMethods.Interfaces
+namespace Lessons3_ClassesObjectsMethods.ReportGenerators
 {
-    class CandidateComparer: IComparer<Candidate>
+    class CandidateComparer : IComparer<Candidate>
     {
         public int Compare(Candidate c1, Candidate c2)
         {

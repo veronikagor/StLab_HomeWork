@@ -1,4 +1,4 @@
-﻿namespace Lessons3_ClassesObjectsMethods.Models
+﻿namespace Lessons3_ClassesObjectsMethods.Interfaces
 {
     interface IInfoActions
     {

@@ -1,4 +1,4 @@
-﻿namespace Lessons3_ClassesObjectsMethods
+﻿namespace Lessons3_ClassesObjectsMethods.Interfaces
 {
     interface IReportGenerator
     { 

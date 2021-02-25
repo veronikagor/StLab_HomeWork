@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Lessons3_ClassesObjectsMethods.Models;
 
-namespace Lessons3_ClassesObjectsMethods
+namespace Lessons3_ClassesObjectsMethods.ReportGenerators
 {
     class EmployeeComparer : IComparer<Employee>
     {
