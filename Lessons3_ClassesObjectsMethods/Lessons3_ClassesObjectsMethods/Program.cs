@@ -1,5 +1,8 @@
-﻿using Bogus;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Bogus;
 using Lessons3_ClassesObjectsMethods.Factories;
+using Lessons3_ClassesObjectsMethods.Models;
 
 namespace Lessons3_ClassesObjectsMethods
 {
@@ -7,29 +10,27 @@ namespace Lessons3_ClassesObjectsMethods
     {
         static void Main(string[] args)
         {
-            var factory = new UserFactory();
+            const int minCountOfUsers = 1;
+            const int maxCountOfUsers = 10;
+            UserFactory factory = new UserFactory();
 
-            var candidates = factory.GetCandidates(new Faker().Random.Int(1, 10));
-            var employees = factory.GetEmployees(new Faker().Random.Int(1, 10));
+            List<Candidate> candidates =
+                factory.GetCandidates(new Faker().Random.Int(minCountOfUsers, maxCountOfUsers));
 
-            foreach (var candidate in candidates)
-            {
-                candidate.ShowInfo();
-            }
+            List<Employee> employees =
+                factory.GetEmployees(new Faker().Random.Int(minCountOfUsers, maxCountOfUsers));
 
-            foreach (var employee in employees)
-            {
-                employee.ShowInfo();
-            }
+            candidates.First().ShowInfo();
+            employees.First().ShowInfo();
 
-            EmployeeReportGenerator employeeReportGenerator = new EmployeeReportGenerator();
-            СandidateReportGenerator сandidateReportGenerator = new СandidateReportGenerator();
+            var сandidateReportGenerator = new СandidateReportGenerator(candidates);
+            var employeeReportGenerator = new EmployeeReportGenerator(employees);
 
-            candidates.Sort(сandidateReportGenerator.Compare);
-            employees.Sort(employeeReportGenerator.Compare);
+            сandidateReportGenerator.SortUsers();
+            employeeReportGenerator.SortUsers();
 
-            СandidateReportGenerator.ShowSortedUserInfo(candidates);
-            EmployeeReportGenerator.ShowSortedUserInfo(employees);
+            сandidateReportGenerator.ShowSortedUserInfo();
+            employeeReportGenerator.ShowSortedUserInfo();
         }
     }
 }

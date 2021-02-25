@@ -4,15 +4,13 @@ namespace Lessons3_ClassesObjectsMethods.Models
 {
     public class Employee : BaseUser, IInfoActions
     {
-        public string CompanyName { get; set; }
-        public string CompanyCountry { get; set; }
-        public string CompanyCity { get; set; }
-        public string CompanyStreet { get; set; }
-        
+        public Job Job { get; set; }
+        public Company Company { get; set; }
+
         public void ShowInfo()
         {
             Console.WriteLine(
-                $"Hello, I am {FullName}, {JobTittle} in {CompanyName} ({CompanyCountry}, {CompanyCity}, {CompanyStreet}) and my salary {JobSalary}");
+                $"Hello, I am {FullName}, {Job.Tittle} in {Company.Name} ({Company.Country}, {Company.City}, {Company.Street}) and my salary {Job.Salary}");
         }
     }
 }
