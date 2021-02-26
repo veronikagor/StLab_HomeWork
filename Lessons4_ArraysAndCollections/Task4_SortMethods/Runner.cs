@@ -7,23 +7,24 @@ namespace Task4_SortMethods
     {
         public static void Main()
         {
-            int[] array = {8, 3, 6, 4, 7, 5};
-            int arrayLength = array.Length;
-            
-            Console.WriteLine("The sorted array: {" + string.Join(", ", array) + "}");
-            
-            Stopwatch stopwatch = new Stopwatch();
+            var createdArray = ArrayGenerator.CreateArray();
+            int arrayLength = createdArray.Length;
+
+            var stopwatch = new Stopwatch();
             
             stopwatch.Start();
-            StoogeSort.Sort(array, 0, arrayLength - 1);
+            StoogeSort.Sort(createdArray, 0, arrayLength - 1);
             stopwatch.Stop();
-            Console.WriteLine($"Program execution time for Stooge sort : {(stopwatch.Elapsed.TotalMilliseconds).ToString()}");
+            Console.WriteLine("The array sorted by stoog sort: {" 
+                              + string.Join(", ", createdArray) + "} in " + (stopwatch.Elapsed.TotalMilliseconds) + " milliseconds");
             
             stopwatch.Reset();
             stopwatch.Start();
-            SelectionSort.Sort(array, arrayLength);
+            SelectionSort.Sort(createdArray, arrayLength);
             stopwatch.Stop();
-            Console.WriteLine($"Program execution time for Selection sort: {(stopwatch.Elapsed.TotalMilliseconds).ToString()}");
+            Console.WriteLine("The array sorted by selection sort: {" 
+                              + string.Join(", ", createdArray) + "} in " + (stopwatch.Elapsed.TotalMilliseconds) + " milliseconds");
+            
         }
     }
 }

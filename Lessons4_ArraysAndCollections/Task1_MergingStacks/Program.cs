@@ -1,29 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 
-/*
- * From the two given stacks that store numbers, create a new stack of the numbers that are in both the first and second stack.
+/* From the two given stacks that store numbers, create a new stack of the numbers that are in both the first and second stack.
  */
-namespace Task1_MergingStacks
+namespace Task1_Stack
 {
     class Program
     {
-        static void Main(string[] args)
+        public Stack<int> CreateStack()
         {
-            Stack<int> stack1 = new Stack<int>();
-            stack1.Push(2);
-            stack1.Push(10);
-            stack1.Push(4);
-            stack1.Push(6);
-            stack1.Push(42);
+            const int minCountOfNumbers = 1;
+            const int maxCountOfNumbers = 11;
 
-            Stack<int> stack2 = new Stack<int>();
-            stack2.Push(5);
-            stack2.Push(3);
-            stack2.Push(11);
+            var random = new Random();
+            var satck = new Stack<int>();
 
-            Stack<int> combinedStack = new Stack<int>();
+            for (int i = 0; i < maxCountOfNumbers - 1; i++)
+            {
+                satck.Push(random.Next(minCountOfNumbers, maxCountOfNumbers));
+            }
 
+            Console.WriteLine("Stack is created: {" + string.Join(", ", satck) + "}");
+            return satck;
+        }
+
+        public void MergeStacks(Stack<int> stack1, Stack<int> stack2)
+        {
+            var combinedStack = new Stack<int>();
             while (stack1.Count > 0 || stack2.Count > 0)
                 if (stack2.Count == 0 || (stack1.Count != 0 && stack1.Peek() > stack2.Peek()))
                     combinedStack.Push(stack1.Pop());
@@ -31,6 +34,15 @@ namespace Task1_MergingStacks
                     combinedStack.Push(stack2.Pop());
 
             Console.WriteLine("Сombined stack {" + string.Join(", ", combinedStack) + "}");
+        }
+
+        static void Main(string[] args)
+        {
+            Program program = new Program();
+            var stack1 = program.CreateStack();
+            var stack2 = program.CreateStack();
+
+            program.MergeStacks(stack1, stack2);
         }
     }
 }
