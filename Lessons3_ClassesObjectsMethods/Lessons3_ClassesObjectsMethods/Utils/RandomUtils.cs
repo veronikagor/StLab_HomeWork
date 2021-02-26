@@ -2,14 +2,12 @@
 
 namespace Lessons3_ClassesObjectsMethods.Utils
 {
-    static class RandomUtils
+    public static class RandomUtils
     {
-        private const int MinCountOfUsers = 1;
-        private const int MaxCountOfUsers = 10;
-
-        public static int CreateRandomNumberOfUsers()
+        public static int RandomInt(int minCount, int maxCount)
         {
-            return new Random().Next(MinCountOfUsers, MaxCountOfUsers);
+            var random = new Random();
+            return random.Next(minCount, maxCount);
         }
     }
 }

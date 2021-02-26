@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using Lessons3_ClassesObjectsMethods.Models;
+using Lessons3_ClassesObjectsMethods.Utils;
 
 namespace Lessons3_ClassesObjectsMethods.Factories
 {
@@ -13,7 +14,7 @@ namespace Lessons3_ClassesObjectsMethods.Factories
             return new Faker<Job>()
                 .RuleFor(j => j.Tittle, f => f.Name.JobTitle())
                 .RuleFor(j => j.Description, f => f.Name.JobDescriptor())
-                .RuleFor(j => j.Salary, f => f.Random.Int(MinSalary, MaxSalary));
+                .RuleFor(j => j.Salary, f => RandomUtils.RandomInt(MinSalary, MaxSalary));
         }
     }
 }

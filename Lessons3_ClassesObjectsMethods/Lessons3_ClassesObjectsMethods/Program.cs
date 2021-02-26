@@ -11,8 +11,11 @@ namespace Lessons3_ClassesObjectsMethods
         {
             var factory = new UserFactory();
 
-            var candidates = factory.GetCandidates(RandomUtils.CreateRandomNumberOfUsers());
-            var employees = factory.GetEmployees(RandomUtils.CreateRandomNumberOfUsers());
+            const int minCountOfUsers = 1;
+            const int maxCountOfUsers = 10;
+
+            var candidates = factory.GetCandidates(RandomUtils.RandomInt(minCountOfUsers, maxCountOfUsers));
+            var employees = factory.GetEmployees(RandomUtils.RandomInt(minCountOfUsers, maxCountOfUsers));
 
             candidates.First().ShowInfo();
             employees.First().ShowInfo();
