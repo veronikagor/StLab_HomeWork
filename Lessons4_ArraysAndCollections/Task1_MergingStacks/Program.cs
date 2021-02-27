@@ -38,6 +38,10 @@ namespace Task1_Stack
 
         static void Main(string[] args)
         {
+            // Не совсем понимаю - а зачем создавать эксземпляр класса в этом же классе?
+            // Лучше сделать по образу и подобию лекции 3 (классы и фабрики)
+            // Отрефакторить все задачи на основании замечания выше
+            
             Program program = new Program();
             var stack1 = program.CreateStack();
             var stack2 = program.CreateStack();

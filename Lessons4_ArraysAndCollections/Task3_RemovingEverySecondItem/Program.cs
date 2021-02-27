@@ -12,6 +12,7 @@ namespace Task3_RemovingEverySecondItem
     {
         public LinkedList<int> CreateList()
         {
+            // Use var instead of int
             int length = 10;
             var numbers = new LinkedList<int>(Enumerable.Range(1, length));
 
@@ -39,6 +40,8 @@ namespace Task3_RemovingEverySecondItem
         static void Main(string[] args)
         {
             var program = new Program();
+            
+            // Проинициализировать массив случайного размера и наполнить его случайными цифрами 
             var listOfPerson = program.CreateList();
             program.CrossOutThePerson(listOfPerson);
         }
