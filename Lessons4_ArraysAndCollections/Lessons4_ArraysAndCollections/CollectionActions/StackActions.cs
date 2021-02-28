@@ -1,20 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Lessons4_ArraysAndCollections.CollectionActions
 {
     public static class StackActions
     {
-        public static void MergeStacks(Stack<int> stack1, Stack<int> stack2)
+        public static HashSet<int> CopyStackToHashSet(Stack<int> stack)
+        {
+            return Enumerable.ToHashSet(stack);
+        }
+
+        public static Stack<int> CreateStackWithDuplicateElements(HashSet<int> firstSet, HashSet<int> secondSet)
         {
             var combinedStack = new Stack<int>();
-            while (stack1.Count > 0 || stack2.Count > 0)
-                if (stack2.Count == 0 || (stack1.Count != 0 && stack1.Peek() > stack2.Peek()))
-                    combinedStack.Push(stack1.Pop());
-                else
-                    combinedStack.Push(stack2.Pop());
 
-            Console.WriteLine("Сombined stack {" + string.Join(", ", combinedStack) + "}\n");
+            foreach (var element in firstSet)
+            {
+                if (secondSet.Contains(element))
+                {
+                    combinedStack.Push(element);
+                }
+            }
+
+            return combinedStack;
         }
     }
 }

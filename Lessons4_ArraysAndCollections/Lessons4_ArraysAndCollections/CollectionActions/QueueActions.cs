@@ -13,13 +13,12 @@ namespace Lessons4_ArraysAndCollections.CollectionActions
             return array;
         }
 
-        public static void SumOfNumbersBetweenMaximumAndMinimumValues(int[] array)
+        public static int SumOfNumbersBetweenMaximumAndMinimumValues(int[] array)
         {
             int upper = Array.IndexOf(array, array.Max());
             int lower = Array.IndexOf(array, array.Min());
-            int sum = array.Skip(Math.Min(upper, lower)).Take(Math.Abs(upper - lower) + 1).Sum();
-
-            Console.WriteLine($"Sum of numbers between upper and lower numbers in queue is {sum}\n");
+            
+            return array.Skip(Math.Min(upper, lower)).Take(Math.Abs(upper - lower) + 1).Sum();
         }
     }
 }

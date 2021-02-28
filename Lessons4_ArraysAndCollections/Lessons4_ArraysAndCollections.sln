@@ -1,12 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1_MergingStacks", "Task1_MergingStacks\Task1_MergingStacks.csproj", "{BE10CB7E-013F-442B-96B9-D23AE69FCE54}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2_SumOfQueueMembers", "Task2_SumOfQueueMembers\Task2_SumOfQueueMembers.csproj", "{D06F4457-C5A7-4263-B017-683B1DE5BF9A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task3_RemovingEverySecondItem", "Task3_RemovingEverySecondItem\Task3_RemovingEverySecondItem.csproj", "{457764D4-3176-4AAC-B73E-180B1811CCD4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task4_SortMethods", "Task4_SortMethods\Task4_SortMethods.csproj", "{7F0C6449-24AB-469C-B4D2-4AF013BC7517}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lessons4_ArraysAndCollections", "Lessons4_ArraysAndCollections\Lessons4_ArraysAndCollections.csproj", "{7F0C6449-24AB-469C-B4D2-4AF013BC7517}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,21 +8,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BE10CB7E-013F-442B-96B9-D23AE69FCE54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BE10CB7E-013F-442B-96B9-D23AE69FCE54}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BE10CB7E-013F-442B-96B9-D23AE69FCE54}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BE10CB7E-013F-442B-96B9-D23AE69FCE54}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D06F4457-C5A7-4263-B017-683B1DE5BF9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D06F4457-C5A7-4263-B017-683B1DE5BF9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D06F4457-C5A7-4263-B017-683B1DE5BF9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D06F4457-C5A7-4263-B017-683B1DE5BF9A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{457764D4-3176-4AAC-B73E-180B1811CCD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{457764D4-3176-4AAC-B73E-180B1811CCD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{457764D4-3176-4AAC-B73E-180B1811CCD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{457764D4-3176-4AAC-B73E-180B1811CCD4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F0C6449-24AB-469C-B4D2-4AF013BC7517}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7F0C6449-24AB-469C-B4D2-4AF013BC7517}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F0C6449-24AB-469C-B4D2-4AF013BC7517}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F0C6449-24AB-469C-B4D2-4AF013BC7517}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
+ 

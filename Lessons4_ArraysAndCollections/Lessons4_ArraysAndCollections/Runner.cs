@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
-using Lessons4_ArraysAndCollections.RandomUtils;
 using Lessons4_ArraysAndCollections.CollectionActions;
+using Lessons4_ArraysAndCollections.RandomUtils;
 
 namespace Lessons4_ArraysAndCollections
 {
@@ -40,9 +40,14 @@ namespace Lessons4_ArraysAndCollections
             int minCountOfNumbers = 1;
             int maxCountOfNumbers = 11;
 
-            var stack1 = CollectionCreation.GenerateRandomNumbersForStack(minCountOfNumbers, maxCountOfNumbers);
-            var stack2 = CollectionCreation.GenerateRandomNumbersForStack(minCountOfNumbers, maxCountOfNumbers);
-            StackActions.MergeStacks(stack1, stack2);
+            var firstStack = CollectionCreation.GenerateRandomNumbersForStack(minCountOfNumbers, maxCountOfNumbers);
+            var secondStack = CollectionCreation.GenerateRandomNumbersForStack(minCountOfNumbers, maxCountOfNumbers);
+            
+            var firstSet = StackActions.CopyStackToHashSet(firstStack);
+            var secondSet = StackActions.CopyStackToHashSet(secondStack);
+            
+            var combinedStack = StackActions.CreateStackWithDuplicateElements(firstSet, secondSet);
+            Console.WriteLine("Сombined stack {" + string.Join(", ", combinedStack) + "}\n");
         }
 
         public static void FindTheSumOfNumberInQueueBetweenMaximumAndMinimumValues()
@@ -52,7 +57,8 @@ namespace Lessons4_ArraysAndCollections
 
             var queue = CollectionCreation.GenerateRandomNumbersForQueue(minCountOfMembers, maxCountOfMembers);
             var array = QueueActions.CopyQueueToArray(queue);
-            QueueActions.SumOfNumbersBetweenMaximumAndMinimumValues(array);
+            var sum = QueueActions.SumOfNumbersBetweenMaximumAndMinimumValues(array);
+            Console.WriteLine($"Sum of numbers between upper and lower numbers in queue is {sum}\n");
         }
 
         public static void CrossOutEverySecondPersonInTheCircle()
@@ -66,15 +72,10 @@ namespace Lessons4_ArraysAndCollections
         public static void SortArrayByTwoSortingAlgorithmsAndDisplayRunTime()
         {
             int minArrayLength = 2;
-            int maxArrayLength = 100;
+            int maxArrayLength = 10;
 
-            var arrayToStoogeSort = CollectionCreation.GenerateRandomNumbersForArray(minArrayLength, maxArrayLength);
-
-            var arrayToSelectionSort = new int[arrayToStoogeSort.Length];
-            for (int i = 0; i < arrayToStoogeSort.Length; i++)
-            {
-                arrayToSelectionSort[i] = arrayToStoogeSort[i];
-            }
+            var arrayToSelectionSort = CollectionCreation.GenerateRandomNumbersForArray(minArrayLength, maxArrayLength);
+            var arrayToStoogeSort = (int[]) arrayToSelectionSort.Clone();
 
             var stopwatch = new Stopwatch();
 

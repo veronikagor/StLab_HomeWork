@@ -9,7 +9,6 @@
         /// Заменим найденное наименьшее значение текущим значением
         /// </summary>
         /// <param name="array">the array of integers</param>
-        /// <param name="arrayLength"></param>
         public static void SelectionSort(int[] array)
         {
             int temp;
@@ -31,7 +30,7 @@
                 array[i] = temp;
             }
         }
-        
+
         /// <summary>
         /// Сортировка по частям:
         /// если первый элемент меньше последнего, поменять их местами.
@@ -39,13 +38,13 @@
         /// затем последние 2/3 элементов, и еще раз для подтверждения первые 2/3 элементов. 
         ///
         /// </summary>
-        /// <param name="array"> the array of integers</param>
+        /// <param name="array">the array of integers</param>
         public static void StoogeSort(int[] array)
         {
             int startIndex = 0;
             StoogeSort(array, startIndex, array.Length - 1);
         }
-        
+
         public static void StoogeSort(int[] array, int startIndex, int endIndex)
         {
             if (startIndex >= endIndex)
