@@ -24,7 +24,7 @@ namespace PhoneShop.Utils
                 }
                 catch (JsonReaderException ex)
                 {
-                    throw new JsonReaderException($"Can't read the file: {fileName}\n" + ex);
+                    throw new JsonReaderException($"Can't read the file: {fileName}\n" + ex.StackTrace);
                 }
             }
             else

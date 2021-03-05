@@ -80,28 +80,45 @@ namespace PhoneShop.Actions
             while (string.IsNullOrEmpty(desiredShopName))
             {
                 log.Info($"\nIn which shop do you want to buy {_desiredPhoneModel}?");
-
-                desiredShopName = Console.ReadLine().Trim();
-
-                bool isShopFound = false;
-
-                foreach (Shop shop in listOfShopsWithDesiredPhoneModel.Keys)
+                try
                 {
-                    if (shop.Name.Equals(desiredShopName))
-                    {
-                        var desiredPhone = listOfShopsWithDesiredPhoneModel[shop];
-                        isShopFound = true;
-                        log.Info(
-                            $"The order {desiredPhone} for the amount {desiredPhone.Price} has been successfully placed!");
-                    }
+                    desiredShopName = Console.ReadLine().Trim().ToUpper();
+                    var phoneToOrder = FindDesiredShop(listOfShopsWithDesiredPhoneModel, desiredShopName);
+
+                    log.Info(
+                        $"The order {phoneToOrder} for the amount {phoneToOrder.Price} has been successfully placed!");
+                }
+                catch (ShopNotFoundException ex)
+                {
+                    log.Info($"Shop '{desiredShopName}' is absent in the list. Please try again: ");
+                    log.Debug($"Shop '{desiredShopName}' is absent in the list.\n{ex.StackTrace}");
+
+                    desiredShopName = null;
+                }
+            }
+        }
+
+        private static Phone FindDesiredShop(Dictionary<Shop, Phone> listOfShopsWithDesiredPhoneModel,
+            string desiredShopName)
+        {
+            var phoneToOrder = new Phone();
+            bool isShopFound = false;
+
+            foreach (Shop shop in listOfShopsWithDesiredPhoneModel.Keys)
+            {
+                if (shop.Name.ToUpper().Equals(desiredShopName))
+                {
+                    isShopFound = true;
+                    phoneToOrder = listOfShopsWithDesiredPhoneModel[shop];
                 }
 
                 if (!isShopFound)
                 {
-                    throw new ShopNotFoundException(
-                        $"Shop {desiredShopName} is absent in the list.");
+                    throw new ShopNotFoundException($"Shop '{desiredShopName}' is not exist.");
                 }
             }
+
+            return phoneToOrder;
         }
     }
 }

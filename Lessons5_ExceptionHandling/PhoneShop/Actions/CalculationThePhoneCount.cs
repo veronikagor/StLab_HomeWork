@@ -25,7 +25,7 @@ namespace PhoneShop.Actions
                             p.OperationSystemType.Equals(operationSystemIos) & p.IsAvailable);
 
                         log.Info(
-                            $"The phones with IOS OS in {shop.Name} is {countIosIsAvailableInShop}");
+                            $"The count of phones with IOS in {shop.Name} is {countIosIsAvailableInShop}");
                         break;
 
                     case operationSystemAndroid:
@@ -33,7 +33,7 @@ namespace PhoneShop.Actions
                             p.OperationSystemType.Equals(operationSystemAndroid) & p.IsAvailable);
 
                         log.Info(
-                            $"The phones with Android OS in {shop.Name} is {countAndroidIsAvailableInShop}");
+                            $"The count of phones with Android OS in {shop.Name} is {countAndroidIsAvailableInShop}");
                         break;
 
                     default:
