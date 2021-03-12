@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using NLog;
-using PhoneShop.Entities;
 using PhoneShop.Exceptions;
-using PhoneShop.Utils;
+using PhoneShop.Models;
 
 namespace PhoneShop.Actions
 {
@@ -13,11 +12,9 @@ namespace PhoneShop.Actions
 
         private static string _desiredPhoneModel;
 
-        public static Dictionary<Shop, Phone> FindShopsWithDesiredPhoneModel(string fileName)
+        public static Dictionary<Shop, Phone> FindShopsWithDesiredPhoneModel(PhoneShops phoneShops)
         {
-            PhoneShops phoneShops = FileReader.ReadTheFile(fileName);
-
-            Dictionary<Shop, Phone> listOfShopsWithDesiredPhoneModel = new Dictionary<Shop, Phone>();
+            var listOfShopsWithDesiredPhoneModel = new Dictionary<Shop, Phone>();
 
             while (string.IsNullOrEmpty(_desiredPhoneModel))
             {
@@ -25,8 +22,8 @@ namespace PhoneShop.Actions
 
                 _desiredPhoneModel = Console.ReadLine().Trim();
 
-                bool isPhoneModelExist = false;
-                bool isPhoneModelAvailable = false;
+                var isPhoneModelExist = false;
+                var isPhoneModelAvailable = false;
 
                 foreach (var shop in phoneShops.Shops)
                 {
@@ -40,32 +37,31 @@ namespace PhoneShop.Actions
                             {
                                 isPhoneModelAvailable = true;
                                 selectedPhone = phone;
+                                listOfShopsWithDesiredPhoneModel.Add(shop, selectedPhone);
                             }
 
                             isPhoneModelExist = true;
                         }
                     }
-
-                    listOfShopsWithDesiredPhoneModel.Add(shop, selectedPhone);
                 }
 
-                if (!isPhoneModelExist && !isPhoneModelAvailable)
+                try
                 {
-                    log.Info($"The product you entered was not found: {_desiredPhoneModel}.");
-                    listOfShopsWithDesiredPhoneModel.Clear();
-                    _desiredPhoneModel = null;
-                }
-                else if (!isPhoneModelAvailable && isPhoneModelExist)
-                {
-                    log.Info($"This product is absent in shop: {_desiredPhoneModel}.");
-                    listOfShopsWithDesiredPhoneModel.Clear();
-                    _desiredPhoneModel = null;
-                }
-                else
-                {
-                    foreach (var shop in listOfShopsWithDesiredPhoneModel.Keys)
+                    if (IsPhoneAvailableToOrder(isPhoneModelExist, isPhoneModelAvailable))
                     {
-                        log.Info($"{shop} - {listOfShopsWithDesiredPhoneModel[shop]}");
+                        foreach (var shop1 in listOfShopsWithDesiredPhoneModel.Keys)
+                        {
+                            log.Info($"{shop1} - {listOfShopsWithDesiredPhoneModel[shop1]}");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (ex is PhoneNotFoundException || ex is PhoneNotAvailableException)
+                    {
+                        listOfShopsWithDesiredPhoneModel.Clear();
+                        _desiredPhoneModel = null;
+                        log.Info($"Please, try again.");
                     }
                 }
             }
@@ -73,6 +69,22 @@ namespace PhoneShop.Actions
             return listOfShopsWithDesiredPhoneModel;
         }
 
+        private static bool IsPhoneAvailableToOrder(bool isPhoneModelExist, bool isPhoneModelAvailable)
+        {
+            if (!isPhoneModelExist && !isPhoneModelAvailable)
+            {
+                log.Info($"The product you entered was not found: {_desiredPhoneModel}.");
+                throw new PhoneNotFoundException($"Phone model '{_desiredPhoneModel}' is not exist.");
+            }
+            else if (!isPhoneModelAvailable && isPhoneModelExist)
+            {
+                log.Info($"This product is absent in shop: {_desiredPhoneModel}.");
+                throw new PhoneNotAvailableException($"Phone model '{_desiredPhoneModel}' is absent in shop.");
+            }
+
+            return true;
+        }
+        
         public static void MakeOrder(Dictionary<Shop, Phone> listOfShopsWithDesiredPhoneModel)
         {
             string desiredShopName = null;
@@ -82,8 +94,8 @@ namespace PhoneShop.Actions
                 log.Info($"\nIn which shop do you want to buy {_desiredPhoneModel}?");
                 try
                 {
-                    desiredShopName = Console.ReadLine().Trim().ToUpper();
-                    var phoneToOrder = FindDesiredShop(listOfShopsWithDesiredPhoneModel, desiredShopName);
+                    desiredShopName = Console.ReadLine().Trim();
+                    var phoneToOrder = FindDesiredShop(listOfShopsWithDesiredPhoneModel, desiredShopName.ToUpper());
 
                     log.Info(
                         $"The order {phoneToOrder} for the amount {phoneToOrder.Price} has been successfully placed!");
@@ -97,14 +109,14 @@ namespace PhoneShop.Actions
                 }
             }
         }
-
+        
         private static Phone FindDesiredShop(Dictionary<Shop, Phone> listOfShopsWithDesiredPhoneModel,
             string desiredShopName)
         {
             var phoneToOrder = new Phone();
-            bool isShopFound = false;
 
-            foreach (Shop shop in listOfShopsWithDesiredPhoneModel.Keys)
+            var isShopFound = false;
+            foreach (var shop in listOfShopsWithDesiredPhoneModel.Keys)
             {
                 if (shop.Name.ToUpper().Equals(desiredShopName))
                 {

@@ -1,6 +1,6 @@
-namespace PhoneShop.Entities
+namespace PhoneShop.Models
 {
-    public class Phone : Shop
+    public class Phone : PhoneShops
     {
         public string Model { get; set; }
 

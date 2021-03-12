@@ -1,11 +1,11 @@
 using System.IO;
 using System.Reflection;
 using Newtonsoft.Json;
-using PhoneShop.Entities;
+using PhoneShop.Models;
 
 namespace PhoneShop.Utils
 {
-    public static class FileReader
+    public static class FileReading
     {
         public static PhoneShops ReadTheFile(string fileName)
         {
@@ -24,7 +24,7 @@ namespace PhoneShop.Utils
                 }
                 catch (JsonReaderException ex)
                 {
-                    throw new JsonReaderException($"Can't read the file: {fileName}\n" + ex.StackTrace);
+                    throw new JsonReaderException($"Can't read the file: {fileName}\n{ex.StackTrace}");
                 }
             }
             else

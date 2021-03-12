@@ -1,4 +1,5 @@
 ﻿using PhoneShop.Actions;
+using PhoneShop.Utils;
 
 namespace PhoneShop
 {
@@ -6,10 +7,10 @@ namespace PhoneShop
     {
         static void Main(string[] args)
         {
-            string fileName = "appsettings.json";
-
-            CalculationThePhoneCount.CalculateTheCountOfPhones("IOS", fileName);
-            var listOfShopsWithDesiredPhoneModel = Order.FindShopsWithDesiredPhoneModel(fileName);
+            const string fileName = "appsettings.json";
+            var phoneShops = FileReading.ReadTheFile(fileName);
+            CalculationThePhoneCount.CalculateTheCountOfPhonesInShops(phoneShops);
+            var listOfShopsWithDesiredPhoneModel = Order.FindShopsWithDesiredPhoneModel(phoneShops);
             Order.MakeOrder(listOfShopsWithDesiredPhoneModel);
         }
     }

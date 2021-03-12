@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace PhoneShop.Entities
+namespace PhoneShop.Models
 {
     public class PhoneShops
     {
