@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace PhoneShop.Models
 {
-    public class Shop : PhoneShops
+    public class Shop 
     {
         public int Id { get; set; }
 
@@ -10,7 +10,7 @@ namespace PhoneShop.Models
 
         public string Description { get; set; }
 
-        public IList<Phone> Phones { get; set; }
+        public List<Phone> Phones { get; set; }
 
         public override string ToString()
         {

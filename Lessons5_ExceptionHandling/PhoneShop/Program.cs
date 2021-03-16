@@ -8,10 +8,11 @@ namespace PhoneShop
         static void Main(string[] args)
         {
             const string fileName = "appsettings.json";
-            var phoneShops = FileReading.ReadTheFile(fileName);
-            CalculationThePhoneCount.CalculateTheCountOfPhonesInShops(phoneShops);
-            var listOfShopsWithDesiredPhoneModel = Order.FindShopsWithDesiredPhoneModel(phoneShops);
-            Order.MakeOrder(listOfShopsWithDesiredPhoneModel);
+            var phoneShops = JsonReader.ReadTheFile(fileName);
+            PhoneShopHelper.CalculateTheCountOfPhonesInShops(phoneShops);
+
+            var listOfShopsWithDesiredPhoneModel = PhoneShopHelper.FindShopsWithDesiredPhoneModel(phoneShops);
+            PhoneShopHelper.MakeOrder(listOfShopsWithDesiredPhoneModel);
         }
     }
 }

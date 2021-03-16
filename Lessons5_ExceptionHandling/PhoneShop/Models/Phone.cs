@@ -1,10 +1,12 @@
+using PhoneShop.Models.Enums;
+
 namespace PhoneShop.Models
 {
-    public class Phone : PhoneShops
+    public class Phone
     {
         public string Model { get; set; }
 
-        public string OperationSystemType { get; set; }
+        public OperationSystemType OperationSystemType { get; set; }
 
         public string MarketLaunchDate { get; set; }
 

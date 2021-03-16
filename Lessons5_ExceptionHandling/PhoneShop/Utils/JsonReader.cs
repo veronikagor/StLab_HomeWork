@@ -5,7 +5,7 @@ using PhoneShop.Models;
 
 namespace PhoneShop.Utils
 {
-    public static class FileReading
+    public static class JsonReader
     {
         public static PhoneShops ReadTheFile(string fileName)
         {

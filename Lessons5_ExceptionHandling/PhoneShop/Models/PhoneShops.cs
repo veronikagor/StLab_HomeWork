@@ -4,6 +4,6 @@ namespace PhoneShop.Models
 {
     public class PhoneShops
     {
-        public IList<Shop> Shops { get; set; }
+        public List<Shop> Shops { get; set; }
     }
 }
