@@ -10,7 +10,7 @@ namespace PhoneShop.Utils
         public static PhoneShops ReadTheFile(string fileName)
         {
             var basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var fullPathToFile = $"{basePath}{Path.DirectorySeparatorChar}{fileName}";
+            var fullPathToFile = $"{basePath}{Path.DirectorySeparatorChar.ToString()}{fileName}";
 
             PhoneShops phoneShops;
 

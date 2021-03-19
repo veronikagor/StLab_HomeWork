@@ -9,10 +9,13 @@ namespace PhoneShop
         {
             const string fileName = "appsettings.json";
             var phoneShops = JsonReader.ReadTheFile(fileName);
-            PhoneShopHelper.CalculateTheCountOfPhonesInShops(phoneShops);
 
-            var listOfShopsWithDesiredPhoneModel = PhoneShopHelper.FindShopsWithDesiredPhoneModel(phoneShops);
-            PhoneShopHelper.MakeOrder(listOfShopsWithDesiredPhoneModel);
+            var phoneShopHelper = new PhoneShopHelper(phoneShops);
+
+            phoneShopHelper.PrintInfoAboutCountOfPhones();
+            phoneShopHelper.FindPhonesWithDesiredPhone();
+            phoneShopHelper.PrintPhonesAndShopsInfo();
+            phoneShopHelper.MakeOrder();
         }
     }
 }

@@ -10,40 +10,42 @@ namespace PhoneShop.Actions
 {
     public class PhoneShopHelper
     {
-        private static Logger log = LogManager.GetCurrentClassLogger();
+        private List<Shop> _shopList;
+        private List<Phone> _filteredPhoneList;
 
-        private static string _desiredPhoneModel;
-        private static string _desiredShopName;
+        private string _desiredPhoneModel;
+        private string _desiredShopName;
 
-        private static bool _isPhoneModelExist;
-        private static bool _isPhoneModelAvailable;
+        private Logger log = LogManager.GetCurrentClassLogger();
 
-        public static void CalculateTheCountOfPhonesInShops(PhoneShops phoneShops)
+        public PhoneShopHelper(PhoneShops phoneShop)
         {
-            foreach (var shop in phoneShops.Shops)
-            {
-                var countIosIsAvailableInShop =
-                    GetCountOfPhonesInShop(shop, OperationSystemType.IOS);
-                log.Info(
-                    $"The count of phones with IOS in {shop.Name} is {countIosIsAvailableInShop}");
+            _shopList = phoneShop.Shops;
+            _filteredPhoneList = new List<Phone>();
+        }
 
-                var countAndroidIsAvailableInShop =
-                    GetCountOfPhonesInShop(shop, OperationSystemType.Android);
+        public void PrintInfoAboutCountOfPhones()
+        {
+            foreach (var shop in _shopList)
+            {
+                var countIosIsAvailableInShop = GetCountOfPhonesInShop(shop, OperationSystemType.IOS);
                 log.Info(
-                    $"The count of phones with Android OS in {shop.Name} is {countAndroidIsAvailableInShop}");
+                    $"The count of phones with IOS in {shop.Name} is {countIosIsAvailableInShop.ToString()}");
+
+                var countAndroidIsAvailableInShop = GetCountOfPhonesInShop(shop, OperationSystemType.Android);
+                log.Info(
+                    $"The count of phones with Android OS in {shop.Name} is {countAndroidIsAvailableInShop.ToString()}");
             }
         }
 
-        private static int GetCountOfPhonesInShop(Shop shop, OperationSystemType operationSystemType)
+        private int GetCountOfPhonesInShop(Shop shop, OperationSystemType operationSystemType)
         {
             return shop.Phones.Count(phone =>
                 phone.OperationSystemType == operationSystemType && phone.IsAvailable);
         }
 
-        public static Dictionary<Shop, Phone> FindShopsWithDesiredPhoneModel(PhoneShops phoneShops)
+        public void FindPhonesWithDesiredPhone()
         {
-            var listOfShopsWithDesiredPhoneModel = new Dictionary<Shop, Phone>();
-
             while (string.IsNullOrEmpty(_desiredPhoneModel))
             {
                 log.Info("\nWhich phone do you want to buy?");
@@ -51,11 +53,7 @@ namespace PhoneShop.Actions
 
                 try
                 {
-                    listOfShopsWithDesiredPhoneModel = GetListOfShopWithDesiredPhone(phoneShops);
-                    foreach (var shop in listOfShopsWithDesiredPhoneModel.Keys)
-                    {
-                        log.Info($"{shop} - {listOfShopsWithDesiredPhoneModel[shop]}");
-                    }
+                    _filteredPhoneList = GetPhonesWithDesiredPhoneModel();
                 }
                 catch (Exception ex)
                 {
@@ -67,36 +65,32 @@ namespace PhoneShop.Actions
                     }
                 }
             }
-
-            return listOfShopsWithDesiredPhoneModel;
         }
 
-        public static Dictionary<Shop, Phone> GetListOfShopWithDesiredPhone(PhoneShops phoneShops)
+        private List<Phone> GetPhonesWithDesiredPhoneModel()
         {
-            var listOfShopsWithDesiredPhoneModel = new Dictionary<Shop, Phone>();
+            bool isPhoneModelExist = false;
+            bool isPhoneModelAvailable = false;
 
-            foreach (var shop in phoneShops.Shops)
+            foreach (var shop in _shopList)
             {
-                foreach (var phone in shop.Phones)
+                foreach (var phone in shop.Phones.Where(phone => phone.Model.Equals(_desiredPhoneModel)))
                 {
-                    if (phone.Model.Equals(_desiredPhoneModel))
+                    if (phone.IsAvailable)
                     {
-                        if (phone.IsAvailable)
-                        {
-                            _isPhoneModelAvailable = true;
-                            listOfShopsWithDesiredPhoneModel.Add(shop, phone);
-                        }
-
-                        _isPhoneModelExist = true;
+                        isPhoneModelAvailable = true;
+                        _filteredPhoneList.Add(phone);
                     }
+
+                    isPhoneModelExist = true;
                 }
             }
 
-            ChekThatPhoneAvailableToOrder(_isPhoneModelExist, _isPhoneModelAvailable);
-            return listOfShopsWithDesiredPhoneModel;
+            ChekThatPhoneAvailableToOrder( isPhoneModelExist, isPhoneModelAvailable);
+            return _filteredPhoneList;
         }
 
-        private static void ChekThatPhoneAvailableToOrder(bool isPhoneModelExist, bool isPhoneModelAvailable)
+        private void ChekThatPhoneAvailableToOrder(bool isPhoneModelExist, bool isPhoneModelAvailable)
         {
             if (!isPhoneModelExist && !isPhoneModelAvailable)
             {
@@ -110,8 +104,19 @@ namespace PhoneShop.Actions
             }
         }
 
-        public static void MakeOrder(Dictionary<Shop, Phone> listOfShopsWithDesiredPhoneModel)
+        public void PrintPhonesAndShopsInfo()
         {
+            foreach (var phone in _filteredPhoneList)
+            {
+                log.Info($"\nInfo about phone: {phone} - {_shopList.Find(shop => shop.Phones.Contains(phone))} ");
+            }
+        }
+
+        public void MakeOrder()
+        {
+            Shop shopToOrder;
+            Phone phoneToOrder;
+
             while (string.IsNullOrEmpty(_desiredShopName))
             {
                 log.Info($"\nIn which shop do you want to buy {_desiredPhoneModel}?");
@@ -119,20 +124,11 @@ namespace PhoneShop.Actions
 
                 try
                 {
-                    if (IsFoundDesiredShop(listOfShopsWithDesiredPhoneModel))
-                    {
-                        var phoneToOrder = new Phone();
-                        foreach (var shop in listOfShopsWithDesiredPhoneModel.Keys)
-                        {
-                            if (shop.Name.ToUpper().Equals(_desiredShopName.ToUpper()))
-                            {
-                                phoneToOrder = listOfShopsWithDesiredPhoneModel[shop];
-                            }
-                        }
+                    shopToOrder = GetShopToOrder();
+                    phoneToOrder = GetPhoneToOrder(shopToOrder);
 
-                        log.Info(
-                            $"The order {phoneToOrder} for the amount {phoneToOrder.Price} has been successfully placed!");
-                    }
+                    log.Info(
+                        $"The order {phoneToOrder} for the amount {phoneToOrder.Price} has been successfully placed!");
                 }
                 catch (ShopNotFoundException ex)
                 {
@@ -145,24 +141,29 @@ namespace PhoneShop.Actions
             }
         }
 
-        private static bool IsFoundDesiredShop(Dictionary<Shop, Phone> listOfShopsWithDesiredPhoneModel)
+        private Shop GetShopToOrder()
         {
             var isShopFound = false;
+            Shop shopToOrder = null;
 
-            foreach (var shop in listOfShopsWithDesiredPhoneModel.Keys)
+            foreach (var shop in _shopList.Where(shop => shop.Name.ToUpper().Equals(_desiredShopName.ToUpper()))
+            )
             {
-                if (shop.Name.ToUpper().Equals(_desiredShopName.ToUpper()))
-                {
-                    isShopFound = true;
-                }
-
-                if (!isShopFound)
-                {
-                    throw new ShopNotFoundException($"Shop '{_desiredShopName}' is not exist.");
-                }
+                isShopFound = true;
+                shopToOrder = shop;
             }
 
-            return isShopFound;
+            if (!isShopFound)
+            {
+                throw new ShopNotFoundException($"Shop '{_desiredShopName}' is not exist.");
+            }
+
+            return shopToOrder;
+        }
+
+        private Phone GetPhoneToOrder(Shop shop)
+        {
+            return shop.Phones.Find(phone => phone.Model.Equals(_desiredPhoneModel));
         }
     }
 }
