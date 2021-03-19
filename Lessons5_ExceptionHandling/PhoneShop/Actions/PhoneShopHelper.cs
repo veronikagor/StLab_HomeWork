@@ -8,146 +8,138 @@ using PhoneShop.Models.Enums;
 
 namespace PhoneShop.Actions
 {
-    public class PhoneShopHelper
+    public static class PhoneShopHelper
     {
-        private List<Shop> _shopList;
-        private List<Phone> _filteredPhoneList;
+        private static Logger log = LogManager.GetCurrentClassLogger();
 
-        private string _desiredPhoneModel;
-        private string _desiredShopName;
-
-        private Logger log = LogManager.GetCurrentClassLogger();
-
-        public PhoneShopHelper(PhoneShops phoneShop)
+        public static void PrintInfoAboutCountOfPhones(PhoneShops phoneShops)
         {
-            _shopList = phoneShop.Shops;
-            _filteredPhoneList = new List<Phone>();
-        }
-
-        public void PrintInfoAboutCountOfPhones()
-        {
-            foreach (var shop in _shopList)
+            foreach (var shop in phoneShops.Shops)
             {
-                var countIosIsAvailableInShop = GetCountOfPhonesInShop(shop, OperationSystemType.IOS);
-                log.Info(
-                    $"The count of phones with IOS in {shop.Name} is {countIosIsAvailableInShop.ToString()}");
-
-                var countAndroidIsAvailableInShop = GetCountOfPhonesInShop(shop, OperationSystemType.Android);
-                log.Info(
-                    $"The count of phones with Android OS in {shop.Name} is {countAndroidIsAvailableInShop.ToString()}");
+                GetCountOfPhonesInShop(shop, OperationSystemType.IOS);
+                GetCountOfPhonesInShop(shop, OperationSystemType.Android);
             }
         }
 
-        private int GetCountOfPhonesInShop(Shop shop, OperationSystemType operationSystemType)
+        private static void GetCountOfPhonesInShop(Shop shop, OperationSystemType operationSystemType)
         {
-            return shop.Phones.Count(phone =>
+            var countAvailablePhones = shop.Phones.Count(phone =>
                 phone.OperationSystemType == operationSystemType && phone.IsAvailable);
+
+            log.Info(
+                $"The count of phones with {operationSystemType} in {shop.Name} is {countAvailablePhones.ToString()}");
         }
 
-        public void FindPhonesWithDesiredPhone()
+        public static string GetPhoneModel(PhoneShops phoneShops)
         {
-            while (string.IsNullOrEmpty(_desiredPhoneModel))
+            string desiredPhoneModel = null;
+
+            while (string.IsNullOrEmpty(desiredPhoneModel))
             {
                 log.Info("\nWhich phone do you want to buy?");
-                _desiredPhoneModel = Console.ReadLine().Trim();
+                desiredPhoneModel = Console.ReadLine().Trim();
 
                 try
                 {
-                    _filteredPhoneList = GetPhonesWithDesiredPhoneModel();
+                    GetPhonesWithDesiredPhoneModel(phoneShops, desiredPhoneModel);
                 }
                 catch (Exception ex)
                 {
                     if (ex is PhoneNotFoundException || ex is PhoneNotAvailableException)
                     {
                         log.Error(
-                            $"There was an error when searching for the desired phone model '{_desiredPhoneModel}': {ex.Message}");
-                        _desiredPhoneModel = null;
+                            $"There was an error when searching for the desired phone model '{desiredPhoneModel}': {ex.Message}");
+                        desiredPhoneModel = null;
                     }
                 }
             }
+
+            return desiredPhoneModel;
         }
 
-        private List<Phone> GetPhonesWithDesiredPhoneModel()
+        private static List<Phone> GetPhonesWithDesiredPhoneModel(PhoneShops phoneShops, string desiredPhoneModel)
         {
-            bool isPhoneModelExist = false;
-            bool isPhoneModelAvailable = false;
+            var isPhoneModelExist = false;
+            var isPhoneModelAvailable = false;
+            var filteredPhoneList = new List<Phone>();
 
-            foreach (var shop in _shopList)
+            foreach (var shop in phoneShops.Shops)
             {
-                foreach (var phone in shop.Phones.Where(phone => phone.Model.Equals(_desiredPhoneModel)))
+                foreach (var phone in shop.Phones.Where(phone =>
+                    phone.Model.Equals(desiredPhoneModel, StringComparison.OrdinalIgnoreCase)))
                 {
                     if (phone.IsAvailable)
                     {
                         isPhoneModelAvailable = true;
-                        _filteredPhoneList.Add(phone);
+                        filteredPhoneList.Add(phone);
                     }
 
                     isPhoneModelExist = true;
                 }
             }
 
-            ChekThatPhoneAvailableToOrder( isPhoneModelExist, isPhoneModelAvailable);
-            return _filteredPhoneList;
+            ChekThatPhoneAvailableToOrder(isPhoneModelExist, isPhoneModelAvailable, desiredPhoneModel);
+            return filteredPhoneList;
         }
 
-        private void ChekThatPhoneAvailableToOrder(bool isPhoneModelExist, bool isPhoneModelAvailable)
+        private static void ChekThatPhoneAvailableToOrder(bool isPhoneModelExist, bool isPhoneModelAvailable,
+            string desiredPhoneModel)
         {
-            if (!isPhoneModelExist && !isPhoneModelAvailable)
+            if (!isPhoneModelExist)
             {
-                log.Info($"The product you entered was not found: {_desiredPhoneModel}. Please, try again:");
-                throw new PhoneNotFoundException($"Phone model '{_desiredPhoneModel}' is not exist.");
+                log.Info($"The product you entered was not found: {desiredPhoneModel}. Please, try again:");
+                throw new PhoneNotFoundException($"Phone model '{desiredPhoneModel}' is not exist.");
             }
-            else if (!isPhoneModelAvailable && isPhoneModelExist)
+
+            if (isPhoneModelAvailable) return;
+            log.Info($"This product is absent in shop: {desiredPhoneModel}. Please, try again:");
+            throw new PhoneNotAvailableException($"Phone model '{desiredPhoneModel}' is absent in shop.");
+        }
+
+        public static void PrintPhonesAndShopsInfo(PhoneShops phoneShops, string desiredPhoneModel)
+        {
+            var filteredPhoneList = GetPhonesWithDesiredPhoneModel(phoneShops, desiredPhoneModel);
+
+            foreach (var phone in filteredPhoneList)
             {
-                log.Info($"This product is absent in shop: {_desiredPhoneModel}. Please, try again:");
-                throw new PhoneNotAvailableException($"Phone model '{_desiredPhoneModel}' is absent in shop.");
+                log.Info($"\nInfo about phone: {phone} - {phoneShops.Shops.Find(shop => shop.Phones.Contains(phone))}");
             }
         }
 
-        public void PrintPhonesAndShopsInfo()
+        public static void MakeOrder(PhoneShops phoneShops, string desiredPhoneModel)
         {
-            foreach (var phone in _filteredPhoneList)
+            string desiredShopName = null;
+            while (string.IsNullOrEmpty(desiredShopName))
             {
-                log.Info($"\nInfo about phone: {phone} - {_shopList.Find(shop => shop.Phones.Contains(phone))} ");
-            }
-        }
-
-        public void MakeOrder()
-        {
-            Shop shopToOrder;
-            Phone phoneToOrder;
-
-            while (string.IsNullOrEmpty(_desiredShopName))
-            {
-                log.Info($"\nIn which shop do you want to buy {_desiredPhoneModel}?");
-                _desiredShopName = Console.ReadLine().Trim();
+                log.Info($"\nIn which shop do you want to buy {desiredPhoneModel}?");
+                desiredShopName = Console.ReadLine().Trim();
 
                 try
                 {
-                    shopToOrder = GetShopToOrder();
-                    phoneToOrder = GetPhoneToOrder(shopToOrder);
+                    var shopToOrder = GetShopToOrder(phoneShops, desiredShopName);
+                    var phoneToOrder = GetPhoneToOrder(shopToOrder, desiredPhoneModel);
 
                     log.Info(
                         $"The order {phoneToOrder} for the amount {phoneToOrder.Price} has been successfully placed!");
                 }
                 catch (ShopNotFoundException ex)
                 {
-                    log.Info($"Shop '{_desiredShopName}' is absent in the list. Please try again: ");
+                    log.Info($"Shop '{desiredShopName}' is absent in the list. Please try again: ");
                     log.Error(
-                        $"There was an error when searching for the desired shop '{_desiredShopName}': {ex.Message}");
+                        $"There was an error when searching for the desired shop '{desiredShopName}': {ex.Message}");
 
-                    _desiredShopName = null;
+                    desiredShopName = null;
                 }
             }
         }
 
-        private Shop GetShopToOrder()
+        private static Shop GetShopToOrder(PhoneShops phoneShops, string desiredShopName)
         {
             var isShopFound = false;
             Shop shopToOrder = null;
 
-            foreach (var shop in _shopList.Where(shop => shop.Name.ToUpper().Equals(_desiredShopName.ToUpper()))
-            )
+            foreach (var shop in phoneShops.Shops.Where(shop =>
+                shop.Name.Equals(desiredShopName, StringComparison.OrdinalIgnoreCase)))
             {
                 isShopFound = true;
                 shopToOrder = shop;
@@ -155,15 +147,15 @@ namespace PhoneShop.Actions
 
             if (!isShopFound)
             {
-                throw new ShopNotFoundException($"Shop '{_desiredShopName}' is not exist.");
+                throw new ShopNotFoundException($"Shop '{desiredShopName}' is not exist.");
             }
 
             return shopToOrder;
         }
 
-        private Phone GetPhoneToOrder(Shop shop)
+        private static Phone GetPhoneToOrder(Shop shop, string desiredPhoneModel)
         {
-            return shop.Phones.Find(phone => phone.Model.Equals(_desiredPhoneModel));
+            return shop.Phones.Find(phone => phone.Model.Equals(desiredPhoneModel, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

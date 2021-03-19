@@ -14,7 +14,6 @@ namespace PhoneShop.Models
 
         public bool IsAvailable { get; set; }
 
-
         public override string ToString()
         {
             return

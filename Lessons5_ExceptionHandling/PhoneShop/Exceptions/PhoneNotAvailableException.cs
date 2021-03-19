@@ -1,5 +1,4 @@
-﻿#nullable enable
-using System;
+﻿using System;
 
 namespace PhoneShop.Exceptions
 {
@@ -9,11 +8,11 @@ namespace PhoneShop.Exceptions
         {
         }
 
-        public PhoneNotAvailableException(string? message) : base(message)
+        public PhoneNotAvailableException(string message) : base(message)
         {
         }
 
-        public PhoneNotAvailableException(string? message, Exception? innerException) : base(message, innerException)
+        public PhoneNotAvailableException(string message, Exception innerException) : base(message, innerException)
         {
         }
     }
