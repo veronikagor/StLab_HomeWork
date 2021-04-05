@@ -1,0 +1,19 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=51e21e5c_002D827e_002D40c1_002Dab2e_002Db6b4f662e9d9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests in category 'SmokeTest'" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Or&gt;&#xD;
+    &lt;Category&gt;SmokeTest&lt;/Category&gt;&#xD;
+    &lt;Category&gt;Regression&lt;/Category&gt;&#xD;
+    &lt;TestAncestor&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::7CC9C92C-B23C-4D38-83BA-A139F68749D5::.NETCoreApp,Version=v3.1::Lessons5_NUnit.TestCaseTest&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::7CC9C92C-B23C-4D38-83BA-A139F68749D5::.NETCoreApp,Version=v3.1::Lessons5_NUnit.Tests.TestMultiplication&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::7CC9C92C-B23C-4D38-83BA-A139F68749D5::.NETCoreApp,Version=v3.1::Lessons5_NUnit.Tests.TestCondition&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::7CC9C92C-B23C-4D38-83BA-A139F68749D5::.NETCoreApp,Version=v3.1::Lessons5_NUnit.IList_Tests&amp;lt;ArrayList&amp;gt;.IsList&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::7CC9C92C-B23C-4D38-83BA-A139F68749D5::.NETCoreApp,Version=v3.1::Lessons5_NUnit.IList_Tests&amp;lt;List&amp;lt;Int32&amp;gt;&amp;gt;.IsList&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::7CC9C92C-B23C-4D38-83BA-A139F68749D5::.NETCoreApp,Version=v3.1::Lessons5_NUnit.Tests.TestRemainderOfDivision&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::7CC9C92C-B23C-4D38-83BA-A139F68749D5::.NETCoreApp,Version=v3.1::Lessons5_NUnit.Tests.TestReminder&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::7CC9C92C-B23C-4D38-83BA-A139F68749D5::.NETCoreApp,Version=v3.1::Lessons5_NUnit.Tests&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::7CC9C92C-B23C-4D38-83BA-A139F68749D5::.NETCoreApp,Version=v3.1::Lessons5_NUnit.Tests.Tests&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::7CC9C92C-B23C-4D38-83BA-A139F68749D5::.NETCoreApp,Version=v3.1::Lessons5_NUnit.Tests.TestCaseTest.Factorial&lt;/TestId&gt;&#xD;
+    &lt;/TestAncestor&gt;&#xD;
+  &lt;/Or&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
