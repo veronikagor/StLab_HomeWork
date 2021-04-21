@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Net;
+using Lessons10_REST_API.Enum;
 using Lessons10_REST_API.Helper;
-using Lessons10_REST_API.Models;
-using Lessons10_REST_API.Services;
 using Lessons10_REST_API.Steps;
 using RestSharp;
 
@@ -23,9 +21,6 @@ namespace Lessons10_REST_API.Base
 
         public void Dispose()
         {
-            // ... clean up test data from the database ...
         }
     }
 }
-
-//+precondition - create new project for getting its Id(for tests Getproject)

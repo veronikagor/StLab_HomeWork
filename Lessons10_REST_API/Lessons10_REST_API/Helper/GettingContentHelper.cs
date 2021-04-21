@@ -1,24 +1,12 @@
-﻿using System.Threading.Tasks;
-using Lessons10_REST_API.Models;
-using Lessons10_REST_API.Models.ProjectModels;
+﻿using Lessons10_REST_API.Models.ProjectModels;
 using Lessons10_REST_API.Models.TestSuiteModels;
 using Newtonsoft.Json;
 using RestSharp;
 
 namespace Lessons10_REST_API.Helper
 {
-    public static class GettingResponse
+    public static class GettingContentHelper
     {
-        public static async Task<IRestResponse> GetProjectResponse(RestClient client, IRestRequest request)
-        {
-            return await client.ExecuteAsync<ProjectResponseModel>(request);
-        }
-
-        public static async Task<IRestResponse> GeTestSuiteResponse(RestClient client, IRestRequest request)
-        {
-            return await client.ExecuteAsync<TestSuiteResponseModel>(request);
-        }
-
         public static ProjectResponseModel GetProjectResponseContent(IRestResponse response)
         {
             var result = response.Content;

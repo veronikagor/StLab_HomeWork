@@ -17,11 +17,10 @@ namespace Lessons10_REST_API.Steps
             projectResponse.Url.Should().NotBe(null);
         }
 
-        public static void TheTestSuiteModelShouldMatchTheFollowingValues(TestSuiteRequestModel testSuiteRequestModel,
-            TestSuiteResponseModel newTestSuiteResponseModel)
+        public static void TheTestSuiteModelShouldMatchTheFollowingValues(TestSuiteResponseModel testSuiteResponseModel, TestSuiteRequestModel testSuiteRequestModel)
         {
-            newTestSuiteResponseModel.Description.Should().Be(testSuiteRequestModel.Description);
-            newTestSuiteResponseModel.Name.Should().Be(testSuiteRequestModel.Name);
+            testSuiteResponseModel.Description.Should().Be(testSuiteRequestModel.Description);
+            testSuiteResponseModel.Name.Should().Be(testSuiteRequestModel.Name);
         }
     }
 }

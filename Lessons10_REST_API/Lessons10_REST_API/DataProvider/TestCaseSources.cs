@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Lessons10_REST_API.Utils
+namespace Lessons10_REST_API.DataProvider
 {
     public static class TestCaseSources
     {
@@ -10,8 +10,8 @@ namespace Lessons10_REST_API.Utils
         public static IEnumerable<object[]> Cases =>
             new List<object[]>
             {
-                new object[] {Guid.NewGuid().ToString("n").Substring(0, 8)},
-                new object[] {random.NextDouble()},
+                 new object[] {Guid.NewGuid().ToString("n").Substring(0, 8)},
+                 new object[] {random.NextDouble()}
             };
         
     }

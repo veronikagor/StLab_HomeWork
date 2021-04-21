@@ -1,12 +1,10 @@
-﻿using System.IO;
-using System.Net;
+﻿using System.Net;
+using System.Threading.Tasks;
 using Allure.Xunit.Attributes;
 using Lessons10_REST_API.Base;
 using Lessons10_REST_API.Factory;
 using Lessons10_REST_API.Helper;
-using Lessons10_REST_API.Services;
 using Lessons10_REST_API.Steps;
-using RestSharp;
 using Xunit;
 
 namespace Lessons10_REST_API.Tests.TestSuiteTests
@@ -22,78 +20,49 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
         }
 
         [AllureTag("Update test suite")]
-        [AllureSubSuite("Update test suite with correct value")]
-        [AllureXunit]
-        public void UpdateTestSuite_WithCorrectValues_ShouldReturnOk()
+        [AllureXunit(DisplayName = "Update test suite with correct value")]
+        public async Task UpdateTestSuite_WithCorrectValues_ShouldReturnOk()
         {
-            _projectId = Precondition.GetProject().Id.ToString();
-            var testSuite = ProjectFactory.GetTestSuite();
+            var suite = CreatingTestSuiteStep.GetTestSuite(_fixture.Admin);
+            var testSuiteToUpdate = TestSuiteFactory.GetTestSuite();
+            var response = await RequestProcessor.UpdateTestSuite(suite.Id, testSuiteToUpdate, _fixture.Admin);
+            var content = GettingContentHelper.GetTestSuiteResponseContent(response);
 
-            var endPointToAdd = Path.Combine(Configurator.AddSuiteUrlEndPoint, _projectId);
-
-            var request = CreatingRequest.CreateTestSuiteRequest(endPointToAdd, testSuite, Method.POST);
-            var response = GettingResponse.GeTestSuiteResponse(_fixture.Admin, request);
-            var suiteId = GettingResponse.GetTestSuiteResponseContent(response.Result).Id.ToString();
-
-            var testSuiteToUpdate = ProjectFactory.GetTestSuite();
-            var endPointToUpdate = Path.Combine(Configurator.UpdateSuiteUrlEndPoint, suiteId);
-            var request2 = CreatingRequest.CreateTestSuiteRequest(endPointToUpdate, testSuiteToUpdate, Method.POST);
-            var response2 = GettingResponse.GeTestSuiteResponse(_fixture.Admin, request2);
-            var newSuiteContent = GettingResponse.GetTestSuiteResponseContent(response2.Result);
-
-            Assert.Equal(HttpStatusCode.OK, response.Result.StatusCode);
-            AssertionSteps.TheTestSuiteModelShouldMatchTheFollowingValues(testSuiteToUpdate, newSuiteContent);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            AssertionSteps.TheTestSuiteModelShouldMatchTheFollowingValues(content, testSuiteToUpdate);
         }
 
         [AllureTag("Update test suite")]
-        [AllureSubSuite("Update test suite with missing value")]
-        [AllureXunit]
-        public void UpdateTestSuite_WithMissingRequiredValue_ShouldReturnBadRequest()
+        [AllureXunit(DisplayName = "Update test suite with with incorrect value")]
+        public async Task UpdateTestSuite_WithMissingRequiredValue_ShouldReturnBadRequest()
         {
-            _projectId = Precondition.GetProject().Id.ToString();
-            var requestModel = ProjectFactory.GetTestSuiteWithMissingRequiredValues();
+            var suite = CreatingTestSuiteStep.GetTestSuite(_fixture.Admin);
+            var testSuiteToUpdate = TestSuiteFactory.GetTestSuiteWithMissingRequiredValues(); 
+            var response = await RequestProcessor.UpdateTestSuite(suite.Id, testSuiteToUpdate, _fixture.Admin);
 
-            var endPoint = Path.Combine(Configurator.UpdateSuiteUrlEndPoint, _projectId);
-
-            var request = CreatingRequest.CreateTestSuiteRequest(endPoint, requestModel, Method.POST);
-            var response = GettingResponse.GeTestSuiteResponse(_fixture.Admin, request);
-            var content = GettingResponse.GetTestSuiteResponseContent(response.Result);
-
-            Assert.Equal(HttpStatusCode.BadRequest, response.Result.StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
         [AllureTag("Update test suite")]
-        [AllureSubSuite("Update test suite when unauthorized")]
-        [AllureXunit]
-        public void UpdateTestSuite_WhenUnauthorized_ShouldReturnUnauthorized()
+        [AllureXunit(DisplayName = "Update test suite when  user is unauthorized")]
+        public async Task UpdateTestSuite_WhenUnauthorized_ShouldReturnUnauthorized()
         {
-            _projectId = Precondition.GetProject().Id.ToString();
-            var requestModel = ProjectFactory.GetTestSuite();
+            var suite = CreatingTestSuiteStep.GetTestSuite(_fixture.Admin);
+            var testSuiteToUpdate = TestSuiteFactory.GetTestSuite(); 
+            var response = await RequestProcessor.UpdateTestSuite(suite.Id, testSuiteToUpdate, _fixture.UnAuthorisedClient);
 
-            var endPoint = Path.Combine(Configurator.UpdateSuiteUrlEndPoint, _projectId);
-
-            var request = CreatingRequest.CreateTestSuiteRequest(endPoint, requestModel, Method.POST);
-            var response = GettingResponse.GeTestSuiteResponse(_fixture.UnAuthorisedClient, request);
-            var content = GettingResponse.GetTestSuiteResponseContent(response.Result);
-
-            Assert.Equal(HttpStatusCode.Unauthorized, response.Result.StatusCode);
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
 
         [AllureTag("Update test suite")]
-        [AllureSubSuite("Update test suite without admin status")]
-        [AllureXunit]
-        public void UpdateTestSuite_WithoutAdminStatus_ShouldReturnForbidden()
+        [AllureXunit(DisplayName = "Update test suite when user is without admin status")]
+        public async Task UpdateTestSuite_WithoutAdminStatus_ShouldReturnForbidden()
         {
-            _projectId = Precondition.GetProject().Id.ToString();
-            var requestModel = ProjectFactory.GetTestSuite();
+            var suite = CreatingTestSuiteStep.GetTestSuite(_fixture.Admin);
+            var testSuiteToUpdate = TestSuiteFactory.GetTestSuite();
+            var response = await RequestProcessor.UpdateTestSuite(suite.Id, testSuiteToUpdate, _fixture.User);
 
-            var endPoint = Path.Combine(Configurator.UpdateSuiteUrlEndPoint, _projectId);
-
-            var request = CreatingRequest.CreateTestSuiteRequest(endPoint, requestModel, Method.POST);
-            var response = GettingResponse.GeTestSuiteResponse(_fixture.User, request);
-            var content = GettingResponse.GetTestSuiteResponseContent(response.Result);
-
-            Assert.Equal(HttpStatusCode.Forbidden, response.Result.StatusCode);
+            Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
         }
     }
 }
