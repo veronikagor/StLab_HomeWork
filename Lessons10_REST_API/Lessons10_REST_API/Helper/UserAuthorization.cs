@@ -1,10 +1,11 @@
 ﻿using System;
+using Lessons10_REST_API.Enum;
 using Lessons10_REST_API.Factory;
 using Lessons10_REST_API.Services;
 using RestSharp;
 using RestSharp.Authenticators;
 
-namespace Lessons10_REST_API.Steps
+namespace Lessons10_REST_API.Helper
 {
     public class UserAuthorization
     {
@@ -21,10 +22,7 @@ namespace Lessons10_REST_API.Steps
                 {
                     Authenticator = new HttpBasicAuthenticator(Configurator.UserName, Configurator.Password)
                 },
-                _ => new RestClient()
-                {
-                    Authenticator = new HttpBasicAuthenticator(Configurator.UserName, Configurator.Password)
-                }
+                _ => throw new Exception("The user the type of rights must be defined!")
             };
         }
 
@@ -32,8 +30,8 @@ namespace Lessons10_REST_API.Steps
         {
             return new RestClient()
             {
-                Authenticator = new HttpBasicAuthenticator(ProjectFactory.GetInvalidCredential().UserName,
-                    ProjectFactory.GetInvalidCredential().Password)
+                Authenticator = new HttpBasicAuthenticator(ClientFactory.GetInvalidCredential().UserName,
+                    ClientFactory.GetInvalidCredential().Password)
             };
         }
     }
