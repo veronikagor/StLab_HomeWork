@@ -6,8 +6,7 @@ namespace Lessons11_IFrame.Services
     public class BrowserServices
     {
         private IWebDriver _webDriver;
-        // protected WaitService WaitService; // здесь нужен waitService
-        
+
         public IWebDriver WebDriver
         {
             get => _webDriver;

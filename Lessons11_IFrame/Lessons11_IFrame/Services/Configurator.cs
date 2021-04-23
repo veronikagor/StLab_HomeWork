@@ -10,11 +10,11 @@ namespace Lessons11_IFrame.Services
         private static readonly Lazy<IConfiguration> s_configuration;
         public static IConfiguration Configuration => s_configuration.Value;
 
-        public static string BaseUrl => Configuration[nameof(BaseUrl)];// ередает как стрингу
+        public static string BaseUrl => Configuration[nameof(BaseUrl)];
       
-        public static string BrowserType => Configuration[nameof(BrowserType)];// ередает как стрингу
+        public static string BrowserType => Configuration[nameof(BrowserType)];
         
-        public static int WaitTimeOut => int.Parse(Configuration[nameof(WaitTimeOut)]);// ередает как стрингу!!!
+        public static int WaitTimeOut => int.Parse(Configuration[nameof(WaitTimeOut)]);
         
         static Configurator()
         {
