@@ -24,7 +24,7 @@ namespace Lessons11_IFrame.Services
             }
             catch (Exception e)
             {
-                throw new AssertionException(e.Message);
+                throw new AssertionException(e.Message, e);
             }
         }
     }
