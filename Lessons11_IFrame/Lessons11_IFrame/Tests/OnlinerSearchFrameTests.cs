@@ -11,7 +11,7 @@ namespace Lessons11_IFrame.Tests
         [TestCaseSource(typeof(Data), nameof(Data.DesiredProduct))]
         public void GetSearchResultTest(string product)
         {
-            var onlinePage = new HomePage(Driver, true);
+            var onlinePage = new HomePage(Driver);
             onlinePage.SearchField().SendKeys(product);
 
             var frame = _waitService.GetVisibleElement(onlinePage.FrameBy);
