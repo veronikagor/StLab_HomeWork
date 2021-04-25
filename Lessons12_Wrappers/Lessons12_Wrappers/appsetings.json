@@ -1,0 +1,7 @@
+﻿{
+  "BrowserType": "chrome",
+  "BaseUrl" : "https://aqa04onl03.testrail.io/",
+  "UserName" : "atrostyanko+0401@gmail.com",
+  "Password": "QqtRK9elseEfAk6ilYcJ",
+  "WaitTimeOut": 10
+}
