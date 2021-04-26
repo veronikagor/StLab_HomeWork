@@ -1,7 +1,6 @@
 ﻿using System;
 using Lessons10_REST_API.Enum;
 using Lessons10_REST_API.Helper;
-using Lessons10_REST_API.Steps;
 using RestSharp;
 
 namespace Lessons10_REST_API.Base

@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using Allure.Xunit.Attributes;
+using FluentAssertions;
 using Lessons10_REST_API.Base;
 using Lessons10_REST_API.DataProvider;
 using Lessons10_REST_API.Helper;
@@ -9,6 +10,7 @@ using Xunit;
 
 namespace Lessons10_REST_API.Tests.ProjectTests
 {
+    [Collection("TestRail collection")]
     public class GetProjectTests : IClassFixture<TestRailFixture>
     {
         private TestRailFixture _fixture;
@@ -26,17 +28,17 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             var project = await CreatingProjectStep.GetTestProject(_fixture.Admin);
             var response = await RequestProcessor.GetProject(project.Data.Id.ToString(), _fixture.Admin);
 
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
         
         [AllureTag("Get project")]
-        [AllureXunit(DisplayName = "Get project with incorrect format Id")]
+        [AllureXunitTheory(DisplayName = "Get project with incorrect format Id")]
         [MemberData(nameof(TestCaseSources.Cases), MemberType = typeof(TestCaseSources))]
         public async Task GetProject_WithIncorrectFormatProjectId_ShouldReturnBadRequest(object id)
         {
             var response = await RequestProcessor.GetProject(id.ToString(), _fixture.Admin);
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [AllureTag("Get project")]
@@ -46,17 +48,17 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             var project = await CreatingProjectStep.GetTestProject(_fixture.Admin);
             var response = await RequestProcessor.GetProject(project.Data.Id.ToString(), _fixture.UnAuthorisedClient);
 
-            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
 
         [AllureTag("Get project")]
         [AllureXunit(DisplayName = "Get project user is without admin status")]
-        public async Task GetProject_WithoutAdminStatus_ShouldReturnUnauthorized()
+        public async Task GetProject_WithoutAdminStatus_ShouldReturnForbidden()
         {
             var project = await CreatingProjectStep.GetTestProject(_fixture.Admin);
             var response = await RequestProcessor.GetProject(project.Data.Id.ToString(), _fixture.User);
 
-            Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
         }
     }
 }

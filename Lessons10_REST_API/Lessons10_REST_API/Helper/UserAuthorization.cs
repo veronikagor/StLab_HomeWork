@@ -1,6 +1,6 @@
 ﻿using System;
 using Lessons10_REST_API.Enum;
-using Lessons10_REST_API.Factory;
+using Lessons10_REST_API.Factories;
 using Lessons10_REST_API.Services;
 using RestSharp;
 using RestSharp.Authenticators;

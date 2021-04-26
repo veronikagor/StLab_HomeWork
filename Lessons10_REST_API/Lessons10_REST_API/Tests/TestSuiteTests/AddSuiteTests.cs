@@ -1,9 +1,10 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using Allure.Xunit.Attributes;
+using FluentAssertions;
 using Lessons10_REST_API.Base;
 using Lessons10_REST_API.DataProvider;
-using Lessons10_REST_API.Factory;
+using Lessons10_REST_API.Factories;
 using Lessons10_REST_API.Helper;
 using Lessons10_REST_API.Steps;
 using Xunit;
@@ -11,6 +12,7 @@ using Xunit.Abstractions;
 
 namespace Lessons10_REST_API.Tests.TestSuiteTests
 {
+    [Collection("TestRail collection")]
     public class AddSuiteTests : IClassFixture<TestRailFixture>
     {
         private TestRailFixture _fixture;
@@ -30,24 +32,24 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
             var response = await RequestProcessor.AddTestSuite(project.Data.Id, suite, _fixture.Admin);
             var content = GettingContentHelper.GetTestSuiteResponseContent(response);
 
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
             AssertionSteps.TheTestSuiteModelShouldMatchTheFollowingValues(content, suite);
         }
 
         [AllureTag("Add test suite")]
         [AllureXunit(DisplayName = "Add test suite with incorrect values")]
-        public async Task CreateTestSuite_WithInCorrectValues_ShouldReturnOk()
+        public async Task CreateTestSuite_WithInCorrectValues_ShouldReturnBadRequest()
         {
             var project = await CreatingProjectStep.GetTestProject(_fixture.Admin);
             var suite = TestSuiteFactory.GetTestSuiteWithMissingRequiredValues();
 
             var response = await RequestProcessor.AddTestSuite(project.Data.Id, suite, _fixture.Admin);
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [AllureTag("Add test suite")]
-        [AllureXunit(DisplayName = "Add test suite with incorrect format Id")]
+        [AllureXunitTheory(DisplayName = "Add test suite with incorrect format Id")]
         [MemberData(nameof(TestCaseSources.Cases), MemberType = typeof(TestCaseSources))]
         public async Task CreateTestSuite_WithIncorrectFormatId_ShouldReturnBadRequest(object id)
         {
@@ -55,7 +57,7 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
 
             var response = await RequestProcessor.AddTestSuite(id, suite, _fixture.Admin);
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [AllureTag("Add test suite")]
@@ -67,7 +69,7 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
 
             var response = await RequestProcessor.AddTestSuite(project.Data.Id, suite, _fixture.UnAuthorisedClient);
 
-            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
 
         [AllureTag("Add test suite")]
@@ -79,7 +81,7 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
 
             var response = await RequestProcessor.AddTestSuite(project.Data.Id, suite, _fixture.User);
 
-            Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
         }
     }
 }

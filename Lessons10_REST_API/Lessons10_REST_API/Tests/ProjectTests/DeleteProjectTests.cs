@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using Allure.Xunit.Attributes;
+using FluentAssertions;
 using Lessons10_REST_API.Base;
 using Lessons10_REST_API.DataProvider;
 using Lessons10_REST_API.Helper;
@@ -9,6 +10,7 @@ using Xunit;
 
 namespace Lessons10_REST_API.Tests.ProjectTests
 {
+    [Collection("TestRail collection")]
     public class DeleteProjectTests : IClassFixture<TestRailFixture>
     {
         private TestRailFixture _fixture;
@@ -25,17 +27,17 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             var project = await CreatingProjectStep.GetTestProject(_fixture.Admin);
             var response = await RequestProcessor.DeleteProject(project.Data.Id.ToString(), _fixture.Admin);
 
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
         
         [AllureTag("Delete project")]
-        [AllureXunit(DisplayName = "Delete project with incorrect format project Id")]
+        [AllureXunitTheory(DisplayName = "Delete project with incorrect format project Id")]
         [MemberData(nameof(TestCaseSources.Cases), MemberType = typeof(TestCaseSources))]
         public async Task DeleteProject_WithIncorrectFormatProjectId_ShouldReturnBadRequest(object id)
         {
             var response = await RequestProcessor.DeleteProject(id.ToString(), _fixture.Admin);
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [AllureTag("Delete project")]
@@ -46,7 +48,7 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             var response = await RequestProcessor.DeleteProject(projectId: project.Data.Id.ToString(),
                 client: _fixture.UnAuthorisedClient);
 
-            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
 
         [AllureTag("Delete project")]
@@ -56,7 +58,7 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             var project = await CreatingProjectStep.GetTestProject(_fixture.Admin);
             var response = await RequestProcessor.DeleteProject(project.Data.Id.ToString(), _fixture.User);
 
-            Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
         }
     }
 }

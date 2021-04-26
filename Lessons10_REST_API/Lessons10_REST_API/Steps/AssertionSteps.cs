@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Net;
+using FluentAssertions;
 using Lessons10_REST_API.Models.ProjectModels;
 using Lessons10_REST_API.Models.TestSuiteModels;
 
@@ -10,17 +11,18 @@ namespace Lessons10_REST_API.Steps
             ProjectRequestModel projectRequest)
         {
             projectResponse.Id.Should().NotBe(null);
-            projectResponse.Name.Should().Be(projectRequest.Name);
-            projectResponse.Announcement.Should().Be(projectRequest.Announcement);
+            projectResponse.Name.Should().BeEquivalentTo(projectRequest.Name);
+            projectResponse.Announcement.Should().BeEquivalentTo(projectRequest.Announcement);
             projectResponse.ShowAnnouncement.Should().Be(projectRequest.ShowAnnouncement);
             projectResponse.SuiteMode.Should().BeInRange(1, 3);
             projectResponse.Url.Should().NotBe(null);
         }
 
-        public static void TheTestSuiteModelShouldMatchTheFollowingValues(TestSuiteResponseModel testSuiteResponseModel, TestSuiteRequestModel testSuiteRequestModel)
+        public static void TheTestSuiteModelShouldMatchTheFollowingValues(TestSuiteResponseModel testSuiteResponse, TestSuiteRequestModel testSuiteRequest)
         {
-            testSuiteResponseModel.Description.Should().Be(testSuiteRequestModel.Description);
-            testSuiteResponseModel.Name.Should().Be(testSuiteRequestModel.Name);
+            testSuiteResponse.Description.Should().Be(testSuiteRequest.Description);
+            testSuiteResponse.Name.Should().Be(testSuiteRequest.Name);
         }
+        
     }
 }

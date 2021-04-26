@@ -1,14 +1,16 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using Allure.Xunit.Attributes;
+using FluentAssertions;
 using Lessons10_REST_API.Base;
-using Lessons10_REST_API.Factory;
+using Lessons10_REST_API.Factories;
 using Lessons10_REST_API.Helper;
 using Lessons10_REST_API.Steps;
 using Xunit;
 
 namespace Lessons10_REST_API.Tests.TestSuiteTests
 {
+    [Collection("TestRail collection")]
     public class UpdateTestSuite : IClassFixture<TestRailFixture>
     {
         private TestRailFixture _fixture;
@@ -23,24 +25,24 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
         [AllureXunit(DisplayName = "Update test suite with correct value")]
         public async Task UpdateTestSuite_WithCorrectValues_ShouldReturnOk()
         {
-            var suite = CreatingTestSuiteStep.GetTestSuite(_fixture.Admin);
+            var suite = await CreatingTestSuiteStep.GetTestSuite(_fixture.Admin);
             var testSuiteToUpdate = TestSuiteFactory.GetTestSuite();
-            var response = await RequestProcessor.UpdateTestSuite(suite.Id, testSuiteToUpdate, _fixture.Admin);
+            var response = await RequestProcessor.UpdateTestSuite(suite.Data.Id, testSuiteToUpdate, _fixture.Admin);
             var content = GettingContentHelper.GetTestSuiteResponseContent(response);
 
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
             AssertionSteps.TheTestSuiteModelShouldMatchTheFollowingValues(content, testSuiteToUpdate);
         }
 
         [AllureTag("Update test suite")]
-        [AllureXunit(DisplayName = "Update test suite with with incorrect value")]
+        [AllureXunit(DisplayName = "Update test suite with incorrect value")]
         public async Task UpdateTestSuite_WithMissingRequiredValue_ShouldReturnBadRequest()
         {
             var suite = CreatingTestSuiteStep.GetTestSuite(_fixture.Admin);
             var testSuiteToUpdate = TestSuiteFactory.GetTestSuiteWithMissingRequiredValues(); 
             var response = await RequestProcessor.UpdateTestSuite(suite.Id, testSuiteToUpdate, _fixture.Admin);
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [AllureTag("Update test suite")]
@@ -51,18 +53,17 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
             var testSuiteToUpdate = TestSuiteFactory.GetTestSuite(); 
             var response = await RequestProcessor.UpdateTestSuite(suite.Id, testSuiteToUpdate, _fixture.UnAuthorisedClient);
 
-            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
 
         [AllureTag("Update test suite")]
         [AllureXunit(DisplayName = "Update test suite when user is without admin status")]
         public async Task UpdateTestSuite_WithoutAdminStatus_ShouldReturnForbidden()
         {
-            var suite = CreatingTestSuiteStep.GetTestSuite(_fixture.Admin);
+            var suite = await CreatingTestSuiteStep.GetTestSuite(_fixture.Admin);
             var testSuiteToUpdate = TestSuiteFactory.GetTestSuite();
-            var response = await RequestProcessor.UpdateTestSuite(suite.Id, testSuiteToUpdate, _fixture.User);
+            var response = await RequestProcessor.UpdateTestSuite(suite.Data.Id, testSuiteToUpdate, _fixture.User);
 
-            Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
-        }
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);        }
     }
 }
