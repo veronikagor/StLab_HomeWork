@@ -26,10 +26,10 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
         [AllureXunit(DisplayName = "Add test suite with correct values")]
         public async Task CreateTestSuite_WithCorrectValues_ShouldReturnOk()
         {
-            var project = await CreatingProjectStep.GetTestProject(_fixture.Admin);
+            var projectId = await CreatingProjectStep.GetTestProjectId(_fixture.Admin);
             var suite = TestSuiteFactory.GetTestSuite();
 
-            var response = await RequestProcessor.AddTestSuite(project.Data.Id, suite, _fixture.Admin);
+            var response = await RequestProcessor.AddTestSuite(projectId, suite, _fixture.Admin);
             var content = GettingContentHelper.GetTestSuiteResponseContent(response);
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -40,20 +40,20 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
         [AllureXunit(DisplayName = "Add test suite with incorrect values")]
         public async Task CreateTestSuite_WithInCorrectValues_ShouldReturnBadRequest()
         {
-            var project = await CreatingProjectStep.GetTestProject(_fixture.Admin);
+            var projectId = await CreatingProjectStep.GetTestProjectId(_fixture.Admin);
             var suite = TestSuiteFactory.GetTestSuiteWithMissingRequiredValues();
 
-            var response = await RequestProcessor.AddTestSuite(project.Data.Id, suite, _fixture.Admin);
+            var response = await RequestProcessor.AddTestSuite(projectId, suite, _fixture.Admin);
 
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [AllureTag("Add test suite")]
-        [AllureXunitTheory(DisplayName = "Add test suite with incorrect format Id")]
-        [MemberData(nameof(TestCaseSources.Cases), MemberType = typeof(TestCaseSources))]
+        [AllureXunitTheory(DisplayName = "Add test suite with incorrect format project Id")]
+        [MemberData(nameof(RandomUtils.GetInvalidProjectId), MemberType = typeof(RandomUtils))]
         public async Task CreateTestSuite_WithIncorrectFormatId_ShouldReturnBadRequest(object id)
         {
-            var suite = TestSuiteFactory.GetTestSuiteWithMissingRequiredValues();
+            var suite = TestSuiteFactory.GetTestSuite();
 
             var response = await RequestProcessor.AddTestSuite(id, suite, _fixture.Admin);
 
@@ -64,10 +64,10 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
         [AllureXunit(DisplayName = "Add test suite when user is unauthorized")]
         public async Task CreateTestSuite_WhenUnauthorized_ShouldReturnUnauthorized()
         {
-            var project = await CreatingProjectStep.GetTestProject(_fixture.Admin);
-            var suite = TestSuiteFactory.GetTestSuiteWithMissingRequiredValues();
+            var projectId = await CreatingProjectStep.GetTestProjectId(_fixture.Admin);
+            var suite = TestSuiteFactory.GetTestSuite();
 
-            var response = await RequestProcessor.AddTestSuite(project.Data.Id, suite, _fixture.UnAuthorisedClient);
+            var response = await RequestProcessor.AddTestSuite(projectId, suite, _fixture.UnAuthorisedClient);
 
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
@@ -76,10 +76,10 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
         [AllureXunit(DisplayName = "Add test suite when user is without admin status")]
         public async Task CreateTestSuite_WithoutAdminStatus_ShouldReturnForbidden()
         {
-            var project = await CreatingProjectStep.GetTestProject(_fixture.Admin);
-            var suite = TestSuiteFactory.GetTestSuiteWithMissingRequiredValues();
+            var projectId = await CreatingProjectStep.GetTestProjectId(_fixture.Admin);
+            var suite = TestSuiteFactory.GetTestSuite();
 
-            var response = await RequestProcessor.AddTestSuite(project.Data.Id, suite, _fixture.User);
+            var response = await RequestProcessor.AddTestSuite(projectId, suite, _fixture.User);
 
             response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
         }

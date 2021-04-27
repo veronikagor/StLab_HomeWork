@@ -14,7 +14,6 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
     public class UpdateTestSuite : IClassFixture<TestRailFixture>
     {
         private TestRailFixture _fixture;
-        private string _projectId;
 
         public UpdateTestSuite(TestRailFixture fixture)
         {
@@ -27,6 +26,7 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
         {
             var suite = await CreatingTestSuiteStep.GetTestSuite(_fixture.Admin);
             var testSuiteToUpdate = TestSuiteFactory.GetTestSuite();
+
             var response = await RequestProcessor.UpdateTestSuite(suite.Data.Id, testSuiteToUpdate, _fixture.Admin);
             var content = GettingContentHelper.GetTestSuiteResponseContent(response);
 
@@ -39,19 +39,22 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
         public async Task UpdateTestSuite_WithMissingRequiredValue_ShouldReturnBadRequest()
         {
             var suite = CreatingTestSuiteStep.GetTestSuite(_fixture.Admin);
-            var testSuiteToUpdate = TestSuiteFactory.GetTestSuiteWithMissingRequiredValues(); 
+            var testSuiteToUpdate = TestSuiteFactory.GetTestSuiteWithMissingRequiredValues();
+
             var response = await RequestProcessor.UpdateTestSuite(suite.Id, testSuiteToUpdate, _fixture.Admin);
 
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [AllureTag("Update test suite")]
-        [AllureXunit(DisplayName = "Update test suite when  user is unauthorized")]
+        [AllureXunit(DisplayName = "Update test suite when user is unauthorized")]
         public async Task UpdateTestSuite_WhenUnauthorized_ShouldReturnUnauthorized()
         {
             var suite = CreatingTestSuiteStep.GetTestSuite(_fixture.Admin);
-            var testSuiteToUpdate = TestSuiteFactory.GetTestSuite(); 
-            var response = await RequestProcessor.UpdateTestSuite(suite.Id, testSuiteToUpdate, _fixture.UnAuthorisedClient);
+            var testSuiteToUpdate = TestSuiteFactory.GetTestSuite();
+
+            var response =
+                await RequestProcessor.UpdateTestSuite(suite.Id, testSuiteToUpdate, _fixture.UnAuthorisedClient);
 
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
@@ -62,8 +65,10 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
         {
             var suite = await CreatingTestSuiteStep.GetTestSuite(_fixture.Admin);
             var testSuiteToUpdate = TestSuiteFactory.GetTestSuite();
+
             var response = await RequestProcessor.UpdateTestSuite(suite.Data.Id, testSuiteToUpdate, _fixture.User);
 
-            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);        }
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+        }
     }
 }

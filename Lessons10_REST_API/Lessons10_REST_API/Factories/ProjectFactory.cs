@@ -19,7 +19,8 @@ namespace Lessons10_REST_API.Factories
         {
             return new Faker<ProjectRequestModel>("en")
                 .RuleFor(p => p.Announcement, f => f.Lorem.Sentence(ProjectConstants.MaxProjectAnnouncementWordCount))
-                .RuleFor(p => p.SuiteMode, f => f.Random.Int(ProjectConstants.MinProjectSuiteValue, ProjectConstants.MaxProjectSuiteValue));
+                .RuleFor(p => p.SuiteMode,
+                    f => f.Random.Int(ProjectConstants.MinProjectSuiteValue, ProjectConstants.MaxProjectSuiteValue));
         }
     }
 }

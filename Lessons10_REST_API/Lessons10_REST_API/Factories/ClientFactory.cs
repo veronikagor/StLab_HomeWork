@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Bogus;
+﻿using Bogus;
 using Lessons10_REST_API.Constants;
 using Lessons10_REST_API.Models;
 

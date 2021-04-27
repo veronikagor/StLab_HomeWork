@@ -7,7 +7,7 @@ using RestSharp.Authenticators;
 
 namespace Lessons10_REST_API.Helper
 {
-    public class UserAuthorization
+    public static class Authorization
     {
         public static RestClient GetAuthorizedClient(TypeOfRights typeOfRights)
         {

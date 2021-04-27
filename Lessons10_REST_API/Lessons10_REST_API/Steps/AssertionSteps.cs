@@ -1,5 +1,4 @@
-﻿using System.Net;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Lessons10_REST_API.Models.ProjectModels;
 using Lessons10_REST_API.Models.TestSuiteModels;
 
@@ -18,11 +17,11 @@ namespace Lessons10_REST_API.Steps
             projectResponse.Url.Should().NotBe(null);
         }
 
-        public static void TheTestSuiteModelShouldMatchTheFollowingValues(TestSuiteResponseModel testSuiteResponse, TestSuiteRequestModel testSuiteRequest)
+        public static void TheTestSuiteModelShouldMatchTheFollowingValues(TestSuiteResponseModel testSuiteResponse,
+            TestSuiteRequestModel testSuiteRequest)
         {
             testSuiteResponse.Description.Should().Be(testSuiteRequest.Description);
             testSuiteResponse.Name.Should().Be(testSuiteRequest.Name);
         }
-        
     }
 }

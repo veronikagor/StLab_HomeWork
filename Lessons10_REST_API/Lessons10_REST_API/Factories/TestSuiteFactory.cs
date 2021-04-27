@@ -10,13 +10,15 @@ namespace Lessons10_REST_API.Factories
         {
             return new Faker<TestSuiteRequestModel>("en")
                 .RuleFor(p => p.Name, f => f.Lorem.Word())
-                .RuleFor(p => p.Description, f => f.Lorem.Sentence(TestsuiteConstants.MaxTestSuiteDescriptionWordCount));
+                .RuleFor(p => p.Description,
+                    f => f.Lorem.Sentence(TestsuiteConstants.MaxTestSuiteDescriptionWordCount));
         }
-        
+
         public static TestSuiteRequestModel GetTestSuiteWithMissingRequiredValues()
         {
             return new Faker<TestSuiteRequestModel>("en")
-                .RuleFor(p => p.Description, f => f.Lorem.Sentence(TestsuiteConstants.MaxTestSuiteDescriptionWordCount));
+                .RuleFor(p => p.Description,
+                    f => f.Lorem.Sentence(TestsuiteConstants.MaxTestSuiteDescriptionWordCount));
         }
     }
 }

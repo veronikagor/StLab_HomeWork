@@ -19,23 +19,34 @@ namespace Lessons10_REST_API.Tests.ProjectTests
         {
             _fixture = fixture;
         }
-        
+
         [AllureTag("Delete project")]
         [AllureXunit(DisplayName = "Delete project with valid project Id")]
         public async Task DeleteProject_WithExistentProjectId_ShouldReturnOk()
         {
-            var project = await CreatingProjectStep.GetTestProject(_fixture.Admin);
-            var response = await RequestProcessor.DeleteProject(project.Data.Id.ToString(), _fixture.Admin);
+            var projectId = await CreatingProjectStep.GetTestProjectId(_fixture.Admin);
+            var response = await RequestProcessor.DeleteProject(projectId, _fixture.Admin);
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
-        
+
+        [AllureTag("Delete project")]
+        [AllureXunit(DisplayName = "Delete project with nonexistent project Id")]
+        public async Task DeleteProject_WithNonexistentProjectId_ShouldReturnBadRequest()
+        {
+            var projectsId = await GettingProjectsStep.GetProjectsId();
+            var nonexistentProjectId = RandomUtils.GetNonExistentProjectId(projectsId);
+            var response = await RequestProcessor.DeleteProject(nonexistentProjectId, _fixture.Admin);
+
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
         [AllureTag("Delete project")]
         [AllureXunitTheory(DisplayName = "Delete project with incorrect format project Id")]
-        [MemberData(nameof(TestCaseSources.Cases), MemberType = typeof(TestCaseSources))]
+        [MemberData(nameof(RandomUtils.GetInvalidProjectId), MemberType = typeof(RandomUtils))]
         public async Task DeleteProject_WithIncorrectFormatProjectId_ShouldReturnBadRequest(object id)
         {
-            var response = await RequestProcessor.DeleteProject(id.ToString(), _fixture.Admin);
+            var response = await RequestProcessor.DeleteProject(id, _fixture.Admin);
 
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
@@ -44,9 +55,8 @@ namespace Lessons10_REST_API.Tests.ProjectTests
         [AllureXunit(DisplayName = "Delete project when user is unauthorized")]
         public async Task DeleteProject_WhenUnauthorized_ShouldReturnUnauthorized()
         {
-            var project = await CreatingProjectStep.GetTestProject(_fixture.Admin);
-            var response = await RequestProcessor.DeleteProject(projectId: project.Data.Id.ToString(),
-                client: _fixture.UnAuthorisedClient);
+            var projectId = await CreatingProjectStep.GetTestProjectId(_fixture.Admin);
+            var response = await RequestProcessor.DeleteProject(projectId, _fixture.UnAuthorisedClient);
 
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
@@ -55,8 +65,8 @@ namespace Lessons10_REST_API.Tests.ProjectTests
         [AllureXunit(DisplayName = "Delete project when user is without admin status")]
         public async Task DeleteProject_WithoutAdminStatus_ShouldReturnForbidden()
         {
-            var project = await CreatingProjectStep.GetTestProject(_fixture.Admin);
-            var response = await RequestProcessor.DeleteProject(project.Data.Id.ToString(), _fixture.User);
+            var projectId = await CreatingProjectStep.GetTestProjectId(_fixture.Admin);
+            var response = await RequestProcessor.DeleteProject(projectId, _fixture.User);
 
             response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
         }

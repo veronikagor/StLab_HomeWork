@@ -23,6 +23,8 @@ namespace Lessons10_REST_API.Services
         public static string AddProjectUrlEndPoint => Configuration[nameof(AddProjectUrlEndPoint)];
 
         public static string GetProjectUrlEndPoint => Configuration[nameof(GetProjectUrlEndPoint)];
+        
+        public static string GetProjectsUrlEndPoint => Configuration[nameof(GetProjectsUrlEndPoint)];
 
         public static string DeleteProjectUrlEndPoint => Configuration[nameof(DeleteProjectUrlEndPoint)];
 
@@ -30,7 +32,7 @@ namespace Lessons10_REST_API.Services
 
         public static string UpdateSuiteUrlEndPoint => Configuration[nameof(UpdateSuiteUrlEndPoint)];
 
-       static Configurator()
+        static Configurator()
         {
             s_configuration = new Lazy<IConfiguration>(BuildConfiguration);
         }
@@ -41,7 +43,7 @@ namespace Lessons10_REST_API.Services
             var builder = new ConfigurationBuilder()
                 .SetBasePath(basePath)
                 .AddJsonFile("appsettings.json");
-            
+
             return builder.Build();
         }
     }

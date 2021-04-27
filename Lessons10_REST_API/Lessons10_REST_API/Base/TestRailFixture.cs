@@ -13,9 +13,9 @@ namespace Lessons10_REST_API.Base
 
         public TestRailFixture()
         {
-            Admin = UserAuthorization.GetAuthorizedClient(TypeOfRights.Admin);
-            User = UserAuthorization.GetAuthorizedClient(TypeOfRights.User);
-            UnAuthorisedClient = UserAuthorization.GetUnAuthorizedClient();
+            Admin = Authorization.GetAuthorizedClient(TypeOfRights.Admin);
+            User = Authorization.GetAuthorizedClient(TypeOfRights.User);
+            UnAuthorisedClient = Authorization.GetUnAuthorizedClient();
         }
 
         public void Dispose()
