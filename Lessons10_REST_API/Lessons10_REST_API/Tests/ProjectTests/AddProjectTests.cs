@@ -1,16 +1,14 @@
 using System.Net;
 using System.Threading.Tasks;
 using Allure.Xunit.Attributes;
-using FluentAssertions;
 using Lessons10_REST_API.Base;
-using Lessons10_REST_API.Factories;
+using Lessons10_REST_API.Factory;
 using Lessons10_REST_API.Helper;
 using Lessons10_REST_API.Steps;
 using Xunit;
 
 namespace Lessons10_REST_API.Tests.ProjectTests
 {
-    [Collection("TestRail collection")]
     public class AddProjectTests : IClassFixture<TestRailFixture>
     {
         private TestRailFixture _fixture;
@@ -28,7 +26,7 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             var response = await RequestProcessor.AddProject(requestModel, _fixture.Admin);
             var content = GettingContentHelper.GetProjectResponseContent(response);
 
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             AssertionSteps.TheProjectModelShouldMatchTheFollowingValues(content, requestModel);
         }
 
@@ -39,7 +37,7 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             var requestModel = ProjectFactory.GetProjectWithMissingRequiredValues();
             var response = await RequestProcessor.AddProject(requestModel, _fixture.Admin);
 
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
         [AllureTag("Add project")]
@@ -49,7 +47,7 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             var requestModel = ProjectFactory.GetProjectWithCorrectValues();
             var response = await RequestProcessor.AddProject(requestModel, _fixture.UnAuthorisedClient);
 
-            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
 
         [AllureTag("Add project")]
@@ -59,7 +57,7 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             var requestModel = ProjectFactory.GetProjectWithCorrectValues();
             var response = await RequestProcessor.AddProject(requestModel, _fixture.User);
 
-            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+            Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
         }
     }
 }
