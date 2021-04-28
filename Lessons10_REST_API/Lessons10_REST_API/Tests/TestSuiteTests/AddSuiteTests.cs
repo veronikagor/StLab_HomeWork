@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
+using Allure.Commons;
 using Allure.Xunit.Attributes;
 using FluentAssertions;
 using Lessons10_REST_API.Base;
@@ -22,8 +23,12 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
             _fixture = fixture;
         }
 
-        [AllureTag("Add test suite")]
-        [AllureXunit(DisplayName = "Add test suite with correct values")]
+        [AllureEpic("Test suite actions")]
+        [AllureFeature("Add test suite")]
+        [AllureStory("Add test suite with correct values")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Positive case")]
+        [AllureXunit]
         public async Task CreateTestSuite_WithCorrectValues_ShouldReturnOk()
         {
             var projectId = await CreatingProjectStep.GetTestProjectId(_fixture.Admin);
@@ -36,8 +41,12 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
             AssertionSteps.TheTestSuiteModelShouldMatchTheFollowingValues(content, suite);
         }
 
-        [AllureTag("Add test suite")]
-        [AllureXunit(DisplayName = "Add test suite with incorrect values")]
+        [AllureEpic("Test suite actions")]
+        [AllureFeature("Add test suite")]
+        [AllureStory("Add test suite with incorrect values")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Negative case")]
+        [AllureXunit]
         public async Task CreateTestSuite_WithInCorrectValues_ShouldReturnBadRequest()
         {
             var projectId = await CreatingProjectStep.GetTestProjectId(_fixture.Admin);
@@ -48,8 +57,11 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
-        [AllureTag("Add test suite")]
-        [AllureXunitTheory(DisplayName = "Add test suite with incorrect format project Id")]
+        [AllureEpic("Test suite actions")]
+        [AllureFeature("Add test suite")]
+        [AllureStory("Add test suite with incorrect format project Id")]
+        [AllureTag("Negative case")]
+        [AllureXunitTheory]
         [MemberData(nameof(RandomUtils.GetInvalidProjectId), MemberType = typeof(RandomUtils))]
         public async Task CreateTestSuite_WithIncorrectFormatId_ShouldReturnBadRequest(object id)
         {
@@ -60,8 +72,11 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
-        [AllureTag("Add test suite")]
-        [AllureXunit(DisplayName = "Add test suite when user is unauthorized")]
+        [AllureEpic("Test suite actions")]
+        [AllureFeature("Add test suite")]
+        [AllureStory("Add test suite when user is unauthorized")]
+        [AllureTag("Negative case")]
+        [AllureXunit]
         public async Task CreateTestSuite_WhenUnauthorized_ShouldReturnUnauthorized()
         {
             var projectId = await CreatingProjectStep.GetTestProjectId(_fixture.Admin);
@@ -72,8 +87,11 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
 
-        [AllureTag("Add test suite")]
-        [AllureXunit(DisplayName = "Add test suite when user is without admin status")]
+        [AllureEpic("Test suite actions")]
+        [AllureFeature("Add test suite")]
+        [AllureStory("Add test suite when user is without admin status")]
+        [AllureTag("Negative case")]
+        [AllureXunit]
         public async Task CreateTestSuite_WithoutAdminStatus_ShouldReturnForbidden()
         {
             var projectId = await CreatingProjectStep.GetTestProjectId(_fixture.Admin);

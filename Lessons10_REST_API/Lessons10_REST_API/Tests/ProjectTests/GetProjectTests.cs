@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
+using Allure.Commons;
 using Allure.Xunit.Attributes;
 using FluentAssertions;
 using Lessons10_REST_API.Base;
@@ -20,8 +21,12 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             _fixture = fixture;
         }
 
-        [AllureTag("Get project")]
-        [AllureXunit(DisplayName = "Get project with valid Id")]
+        [AllureEpic("Project actions")]
+        [AllureFeature("Get project")]
+        [AllureStory("Get project with existent project Id")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Positive case")]
+        [AllureXunit]
         public async Task GetProject_WithExistentProjectId_ShouldReturnOk()
         {
             var projectId = await CreatingProjectStep.GetTestProjectId(_fixture.Admin);
@@ -30,8 +35,12 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
-        [AllureTag("Get project")]
-        [AllureXunit(DisplayName = "Get project with nonexistent project Id")]
+        [AllureEpic("Project actions")]
+        [AllureFeature("Get project")]
+        [AllureStory("Get project with nonexistent project Id")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Negative case")]
+        [AllureXunit]
         public async Task GetProject_WithNonexistentProjectId_ShouldReturnBadRequest()
         {
             var projectsId = await GettingProjectsStep.GetProjectsId();
@@ -41,8 +50,12 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
-        [AllureTag("Get project")]
-        [AllureXunitTheory(DisplayName = "Get project with incorrect format Id")]
+        [AllureEpic("Project actions")]
+        [AllureFeature("Get project")]
+        [AllureStory("Get project with incorrect format Id")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Negative case")] 
+        [AllureXunitTheory]
         [MemberData(nameof(RandomUtils.GetInvalidProjectId), MemberType = typeof(RandomUtils))]
         public async Task GetProject_WithIncorrectFormatProjectId_ShouldReturnBadRequest(object id)
         {
@@ -51,8 +64,12 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
-        [AllureTag("Get project")]
-        [AllureXunit(DisplayName = "Get project when user is unauthorized")]
+        [AllureEpic("Project actions")]
+        [AllureFeature("Get project")]
+        [AllureStory("Get project when user is unauthorized")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Negative case")]
+        [AllureXunit]
         public async Task GetProject_WhenUnauthorized_ShouldReturnUnauthorized()
         {
             var projectId = await CreatingProjectStep.GetTestProjectId(_fixture.Admin);
@@ -61,8 +78,12 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
 
-        [AllureTag("Get project")]
-        [AllureXunit(DisplayName = "Get project user is without admin status")]
+        [AllureEpic("Project actions")]
+        [AllureFeature("Get project")]
+        [AllureStory("Get project user is without admin status")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Negative case")]
+        [AllureXunit]
         public async Task GetProject_WithoutAdminStatus_ShouldReturnForbidden()
         {
             var projectId = await CreatingProjectStep.GetTestProjectId(_fixture.Admin);

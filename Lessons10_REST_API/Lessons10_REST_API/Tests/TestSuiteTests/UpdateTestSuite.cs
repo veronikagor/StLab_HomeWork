@@ -1,8 +1,10 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
+using Allure.Commons;
 using Allure.Xunit.Attributes;
 using FluentAssertions;
 using Lessons10_REST_API.Base;
+using Lessons10_REST_API.DataProvider;
 using Lessons10_REST_API.Factories;
 using Lessons10_REST_API.Helper;
 using Lessons10_REST_API.Steps;
@@ -20,8 +22,12 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
             _fixture = fixture;
         }
 
-        [AllureTag("Update test suite")]
-        [AllureXunit(DisplayName = "Update test suite with correct value")]
+        [AllureEpic("Test suite actions")]
+        [AllureFeature("Update test suite")]
+        [AllureStory("Update test suite with correct value")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Positive case")]
+        [AllureXunit]
         public async Task UpdateTestSuite_WithCorrectValues_ShouldReturnOk()
         {
             var suite = await CreatingTestSuiteStep.GetTestSuite(_fixture.Admin);
@@ -34,8 +40,12 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
             AssertionSteps.TheTestSuiteModelShouldMatchTheFollowingValues(content, testSuiteToUpdate);
         }
 
-        [AllureTag("Update test suite")]
-        [AllureXunit(DisplayName = "Update test suite with incorrect value")]
+        [AllureEpic("Test suite actions")]
+        [AllureFeature("Update test suite")]
+        [AllureStory("Update test suite with incorrect value")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Negative case")]
+        [AllureXunit]
         public async Task UpdateTestSuite_WithMissingRequiredValue_ShouldReturnBadRequest()
         {
             var suite = CreatingTestSuiteStep.GetTestSuite(_fixture.Admin);
@@ -45,9 +55,29 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
 
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
+        
+        [AllureEpic("Test suite actions")]
+        [AllureFeature("Update test suite")]
+        [AllureStory("Update test suite with incorrect suite Id")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Negative case")]
+        [AllureXunitTheory]
+        [MemberData(nameof(RandomUtils.GetInvalidProjectId), MemberType = typeof(RandomUtils))]
+        public async Task UpdateTestSuite_WithIncorrectSuiteId_ShouldReturnBadRequest(object suiteId)
+        {
+            var testSuiteToUpdate = TestSuiteFactory.GetTestSuite();
 
-        [AllureTag("Update test suite")]
-        [AllureXunit(DisplayName = "Update test suite when user is unauthorized")]
+            var response = await RequestProcessor.UpdateTestSuite(suiteId, testSuiteToUpdate, _fixture.Admin);
+
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
+        [AllureEpic("Test suite actions")]
+        [AllureFeature("Update test suite")]
+        [AllureStory("Update test suite when user is unauthorized")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Negative case")]
+        [AllureXunit]
         public async Task UpdateTestSuite_WhenUnauthorized_ShouldReturnUnauthorized()
         {
             var suite = CreatingTestSuiteStep.GetTestSuite(_fixture.Admin);
@@ -59,8 +89,12 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
 
-        [AllureTag("Update test suite")]
-        [AllureXunit(DisplayName = "Update test suite when user is without admin status")]
+        [AllureEpic("Test suite actions")]
+        [AllureFeature("Update test suite")]
+        [AllureStory("Update test suite when user is without admin status")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Negative case")]
+        [AllureXunit]
         public async Task UpdateTestSuite_WithoutAdminStatus_ShouldReturnForbidden()
         {
             var suite = await CreatingTestSuiteStep.GetTestSuite(_fixture.Admin);

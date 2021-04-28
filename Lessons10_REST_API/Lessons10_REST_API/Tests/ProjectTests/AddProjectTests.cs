@@ -1,5 +1,6 @@
 using System.Net;
 using System.Threading.Tasks;
+using Allure.Commons;
 using Allure.Xunit.Attributes;
 using FluentAssertions;
 using Lessons10_REST_API.Base;
@@ -19,9 +20,13 @@ namespace Lessons10_REST_API.Tests.ProjectTests
         {
             _fixture = fixture;
         }
-
-        [AllureTag("Add project")]
-        [AllureXunit(DisplayName = "Add project")]
+        
+        [AllureEpic("Project actions")]
+        [AllureFeature("Add project")]
+        [AllureStory("Add project with valid values")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Positive case")]
+        [AllureXunit]
         public async Task CreateProject_WithCorrectValues_ShouldReturnOk()
         {
             var requestModel = ProjectFactory.GetProjectWithCorrectValues();
@@ -32,8 +37,12 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             AssertionSteps.TheProjectModelShouldMatchTheFollowingValues(content, requestModel);
         }
 
-        [AllureTag("Add project")]
-        [AllureXunit(DisplayName = "Add project with missing required value")]
+        [AllureEpic("Project actions")]
+        [AllureFeature("Add project")]
+        [AllureStory("Add project with missing required value")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Negative case")]
+        [AllureXunit]
         public async Task CreateProject_WithMissingRequiredValue_ShouldReturnBadRequest()
         {
             var requestModel = ProjectFactory.GetProjectWithMissingRequiredValues();
@@ -42,8 +51,12 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
-        [AllureTag("Add project")]
-        [AllureXunit(DisplayName = "Add project when user is unauthorized")]
+        [AllureEpic("Project actions")]
+        [AllureFeature("Add project")]
+        [AllureStory("Add project when user is unauthorized")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Negative case")]
+        [AllureXunit]
         public async Task CreateProject_WhenUnauthorized_ShouldReturnUnauthorized()
         {
             var requestModel = ProjectFactory.GetProjectWithCorrectValues();
@@ -52,8 +65,12 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
 
-        [AllureTag("Add project")]
-        [AllureXunit(DisplayName = "Add project when user is without admin status")]
+        [AllureEpic("Project actions")]
+        [AllureFeature("Add project")]
+        [AllureStory("Add project when user is without admin status")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Negative case")]
+        [AllureXunit]
         public async Task CreateProject_WithoutAdminStatus_ShouldReturnForbidden()
         {
             var requestModel = ProjectFactory.GetProjectWithCorrectValues();

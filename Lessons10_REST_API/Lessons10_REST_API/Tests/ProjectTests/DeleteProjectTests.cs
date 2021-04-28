@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
+using Allure.Commons;
 using Allure.Xunit.Attributes;
 using FluentAssertions;
 using Lessons10_REST_API.Base;
@@ -19,9 +20,14 @@ namespace Lessons10_REST_API.Tests.ProjectTests
         {
             _fixture = fixture;
         }
-
-        [AllureTag("Delete project")]
-        [AllureXunit(DisplayName = "Delete project with valid project Id")]
+        
+       // [AllureSubSuite("Delete project")]
+        [AllureEpic("Project actions")]
+        [AllureFeature("Delete project")]
+        [AllureStory("Delete project with valid project Id")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Positive case")]
+        [AllureXunit]
         public async Task DeleteProject_WithExistentProjectId_ShouldReturnOk()
         {
             var projectId = await CreatingProjectStep.GetTestProjectId(_fixture.Admin);
@@ -29,9 +35,15 @@ namespace Lessons10_REST_API.Tests.ProjectTests
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
-
-        [AllureTag("Delete project")]
-        [AllureXunit(DisplayName = "Delete project with nonexistent project Id")]
+        
+       // [AllureSubSuite("Delete project")]
+        [AllureEpic("Project actions")]
+        [AllureFeature("Delete project")]
+        [AllureStory("Delete project with nonexistent project Id")]
+        [AllureOwner("MyOwner")]
+        [AllureSeverity(SeverityLevel.minor)]
+        [AllureTag("Negative case")]
+        [AllureXunit]
         public async Task DeleteProject_WithNonexistentProjectId_ShouldReturnBadRequest()
         {
             var projectsId = await GettingProjectsStep.GetProjectsId();
@@ -41,8 +53,14 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
-        [AllureTag("Delete project")]
-        [AllureXunitTheory(DisplayName = "Delete project with incorrect format project Id")]
+        //[AllureSubSuite("Delete project")]
+        [AllureEpic("Project actions")]
+        [AllureFeature("Delete project")]
+        [AllureStory("Delete project with incorrect format project Id")]
+        [AllureOwner("MyOwner")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Negative case")]
+        [AllureXunitTheory]
         [MemberData(nameof(RandomUtils.GetInvalidProjectId), MemberType = typeof(RandomUtils))]
         public async Task DeleteProject_WithIncorrectFormatProjectId_ShouldReturnBadRequest(object id)
         {
@@ -51,8 +69,14 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
-        [AllureTag("Delete project")]
-        [AllureXunit(DisplayName = "Delete project when user is unauthorized")]
+        //[AllureSubSuite("Delete project")]
+        [AllureEpic("Project actions")]
+        [AllureFeature("Delete project")]
+        [AllureStory("Delete project when user is unauthorized")]
+        [AllureOwner("MyOwner")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Negative case")]
+        [AllureXunit]
         public async Task DeleteProject_WhenUnauthorized_ShouldReturnUnauthorized()
         {
             var projectId = await CreatingProjectStep.GetTestProjectId(_fixture.Admin);
@@ -61,8 +85,14 @@ namespace Lessons10_REST_API.Tests.ProjectTests
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
 
-        [AllureTag("Delete project")]
-        [AllureXunit(DisplayName = "Delete project when user is without admin status")]
+        //[AllureSubSuite("Delete project")]
+        [AllureEpic("Project actions")]
+        [AllureFeature("Delete project")]
+        [AllureStory("Delete project when user is without admin status")]
+        [AllureOwner("MyOwner")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Negative case")]
+        [AllureXunit]
         public async Task DeleteProject_WithoutAdminStatus_ShouldReturnForbidden()
         {
             var projectId = await CreatingProjectStep.GetTestProjectId(_fixture.Admin);
