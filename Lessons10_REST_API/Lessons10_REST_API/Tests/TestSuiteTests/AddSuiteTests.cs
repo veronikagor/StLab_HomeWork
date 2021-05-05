@@ -47,7 +47,7 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
         [AllureSeverity(SeverityLevel.critical)]
         [AllureTag("Negative case")]
         [AllureXunit]
-        public async Task CreateTestSuite_WithInCorrectValues_ShouldReturnBadRequest()
+        public async Task CreateTestSuite_WhenMissingRequiredValues_ShouldReturnBadRequest()
         {
             var projectId = await CreatingProjectStep.GetTestProjectId(_fixture.Admin);
             var suite = TestSuiteFactory.GetTestSuiteWithMissingRequiredValues();

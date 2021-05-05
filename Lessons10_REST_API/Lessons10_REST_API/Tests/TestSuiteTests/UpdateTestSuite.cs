@@ -42,22 +42,6 @@ namespace Lessons10_REST_API.Tests.TestSuiteTests
 
         [AllureEpic("Test suite actions")]
         [AllureFeature("Update test suite")]
-        [AllureStory("Update test suite with incorrect value")]
-        [AllureSeverity(SeverityLevel.critical)]
-        [AllureTag("Negative case")]
-        [AllureXunit]
-        public async Task UpdateTestSuite_WithMissingRequiredValue_ShouldReturnBadRequest()
-        {
-            var suite = CreatingTestSuiteStep.GetTestSuite(_fixture.Admin);
-            var testSuiteToUpdate = TestSuiteFactory.GetTestSuiteWithMissingRequiredValues();
-
-            var response = await RequestProcessor.UpdateTestSuite(suite.Id, testSuiteToUpdate, _fixture.Admin);
-
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        }
-        
-        [AllureEpic("Test suite actions")]
-        [AllureFeature("Update test suite")]
         [AllureStory("Update test suite with incorrect suite Id")]
         [AllureSeverity(SeverityLevel.critical)]
         [AllureTag("Negative case")]
