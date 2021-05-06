@@ -5,6 +5,7 @@ namespace Lessons8_PageObject.Core.Wrappers
     public class TextBox 
     {
         private UIElement _uiElement;
+        
         private IJavaScriptExecutor _javaScriptExecutor;
 
         public TextBox(IWebDriver webDriver, By @by)
@@ -17,6 +18,7 @@ namespace Lessons8_PageObject.Core.Wrappers
         {
             _uiElement.Click();
         }
+        
         public void SendKeys(string text)
         {
             _uiElement.SendKeys(text);
@@ -24,7 +26,7 @@ namespace Lessons8_PageObject.Core.Wrappers
 
         public void Clear()
         {
-            _javaScriptExecutor.ExecuteScript("argument[0].value = '';", _uiElement);//.GetIwebElement наверное для получения элемента с вэйтером
+            _javaScriptExecutor.ExecuteScript("argument[0].value = '';", _uiElement);
         }
 
         public string Text => _uiElement.Text;

@@ -60,11 +60,11 @@ namespace Lessons8_PageObject.Services
 
         public IWebElement ExistElement(By by)
         {
-            var fluentWAit = new DefaultWait<IWebDriver>(_driver);
-            fluentWAit.Timeout = TimeSpan.FromSeconds(5);
-            fluentWAit.PollingInterval = TimeSpan.FromMilliseconds(50);
-            fluentWAit.IgnoreExceptionTypes(typeof(NoSuchElementException));
-            return fluentWAit.Until(x => x.FindElement(by));
+            var fluentWait = new DefaultWait<IWebDriver>(_driver);
+            fluentWait.Timeout = TimeSpan.FromSeconds(5);
+            fluentWait.PollingInterval = TimeSpan.FromMilliseconds(50);
+            fluentWait.IgnoreExceptionTypes(typeof(NoSuchElementException));
+            return fluentWait.Until(x => x.FindElement(by));
         }
     }
-} 
+}

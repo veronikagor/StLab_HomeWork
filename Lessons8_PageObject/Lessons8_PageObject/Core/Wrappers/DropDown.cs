@@ -12,7 +12,7 @@ namespace Lessons8_PageObject.Core.Wrappers
 
         public DropDown(IWebDriver webDriver,By @by)
         {
-            _waitService = _waitService;
+            _waitService = new WaitService(webDriver);
             _by = by;
             _selectElement = new SelectElement(_waitService.GetVisibleElement(by));
         }

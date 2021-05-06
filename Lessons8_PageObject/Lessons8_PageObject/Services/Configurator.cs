@@ -8,12 +8,17 @@ namespace Lessons8_PageObject.Services
     public static class Configurator
     {
         private static readonly Lazy<IConfiguration> s_configuration;
+
         public static IConfiguration Configuration => s_configuration.Value;
 
         public static string BaseUrl => Configuration[nameof(BaseUrl)];
+
         public static string UserName => Configuration[nameof(UserName)];
+
         public static string Password => Configuration[nameof(Password)];
+
         public static string BrowserType => Configuration[nameof(BrowserType)];
+
         public static int WaitTimeOut => int.Parse(Configuration[nameof(WaitTimeOut)]);
 
         static Configurator()

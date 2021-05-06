@@ -2,24 +2,24 @@
 
 namespace Lessons8_PageObject.Core.Wrappers
 {
-    public class Button
+    public class StaticElement
     {
         private UIElement _uiElement;
 
-        public Button(IWebDriver webDriver, By @by)
+        public StaticElement(IWebDriver webDriver, By @by)
         {
             _uiElement = new UIElement(webDriver, @by);
         }
         
-        // public Button(IWebDriver webDriver)
+        // public StaticElement(IWebDriver webDriver)
         // {
         //     _uiElement = new UIElement(webDriver);
         // }
 
-        public void Click() => _uiElement.Click();
-        
-        public string Text => _uiElement.Text;
+        public string GetText()
+        {
+            return _uiElement.Text;
+        }
 
-        public bool Displayed => _uiElement.Displayed;
     }
 }

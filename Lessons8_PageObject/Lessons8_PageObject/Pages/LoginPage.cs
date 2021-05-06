@@ -28,14 +28,7 @@ namespace Lessons8_PageObject.Pages
 
         public override bool IsPageOpened()
         {
-            try
-            {
-                return _waitService.GetVisibleElement(LoginInButtonBy).Displayed;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
+            return _waitService.GetVisibleElement(LoginInButtonBy).Displayed;
         }
 
         public TextBox UserName() => new TextBox(Driver, UserNameBy);

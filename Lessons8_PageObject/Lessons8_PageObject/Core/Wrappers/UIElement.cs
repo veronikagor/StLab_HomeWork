@@ -14,7 +14,7 @@ namespace Lessons8_PageObject.Core.Wrappers
         private IWebElement _webElementImplementation;
         private Actions _actions;
         private IJavaScriptExecutor _javaScriptExecutor;
-        protected WaitService _waitService; 
+        protected WaitService _waitService;
 
         public UIElement(IWebDriver webDriver, By @by)
         {
@@ -32,8 +32,8 @@ namespace Lessons8_PageObject.Core.Wrappers
             _webElementImplementation = webElement;
             _waitService = new WaitService(webDriver);
             _actions = new Actions(webDriver);
-        }    
-        
+        }
+
         public UIElement(IWebDriver webDriver)
         {
             _webDriver = webDriver;
@@ -65,21 +65,22 @@ namespace Lessons8_PageObject.Core.Wrappers
         {
             try
             {
-                _webElementImplementation.Click();
+                _waitService.GetClickableElement(_webElementImplementation).Click();
             }
             catch (Exception e)
             {
                 try
                 {
                     _actions
-                        .MoveToElement(_webElementImplementation)
+                        .MoveToElement(_waitService.GetClickableElement(_webElementImplementation))
                         .Click()
                         .Build()
                         .Perform();
                 }
                 catch (Exception exception)
                 {
-                    _javaScriptExecutor.ExecuteScript("argument[0].click();",_webElementImplementation);
+                    _javaScriptExecutor.ExecuteScript("argument[0].click();",
+                        _waitService.GetClickableElement(_webElementImplementation));
                 }
             }
         }
@@ -100,19 +101,19 @@ namespace Lessons8_PageObject.Core.Wrappers
         }
 
         public string TagName => _webElementImplementation.TagName;
-        
+
         public string Text => _webElementImplementation.Text;
-        
+
         public bool Enabled => _webElementImplementation.Enabled;
-        
+
         public bool Selected => _webElementImplementation.Selected;
-        
+
         public Point Location => _webElementImplementation.Location;
-        
+
         public Size Size => _webElementImplementation.Size;
-        
+
         public bool Displayed => _webElementImplementation.Displayed;
-        
+
         public IWebElement FindElement(By @by)
         {
             return _webElementImplementation.FindElement(by);
@@ -120,6 +121,7 @@ namespace Lessons8_PageObject.Core.Wrappers
 
         public ReadOnlyCollection<IWebElement> FindElements(By @by)
         {
-            return _webElementImplementation.FindElements(by);        }
+            return _webElementImplementation.FindElements(by);
+        }
     }
 }
