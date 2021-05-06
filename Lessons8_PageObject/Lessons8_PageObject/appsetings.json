@@ -1,0 +1,7 @@
+﻿{
+  "BrowserType": "chrome",
+  "BaseUrl" : "https://www.saucedemo.com/",
+  "UserName" : "standard_user",
+  "Password": "secret_sauce",
+  "WaitTimeOut": 10
+}
